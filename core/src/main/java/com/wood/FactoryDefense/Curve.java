@@ -1,16 +1,16 @@
-package com.wood.FactoryDefense.Curve;
+package com.wood.FactoryDefense;
 
 import java.util.HashMap;
 import java.util.Map;
 
 public class Curve {
-    Double  xA, xB, yA, yB,k = 0.0,x = 1.0,y = 1.0;
+     Double  xA, xB, yA, yB,k = 0.0,x = 1.0,y = 1.0;
 
     int piece;
 
     Map<Integer, Coordinate> lib = new HashMap<>();
 
-    Curve(int piece , Double x, Double y, Double xA, Double yA, Double xB, Double yB) {
+    public Curve(int piece , Double x, Double y, Double xA, Double yA, Double xB, Double yB) {
         this.piece = piece;
         this.x = x;
         this.y = y;
@@ -26,13 +26,15 @@ public class Curve {
             this.xB = x;
         }
         this.yB = yB;
+        main();
     }
-    Curve(int piece , Double xA, Double yA, Double xB, Double yB){
+     public Curve(int piece , Double xA, Double yA, Double xB, Double yB){
         this.piece = piece;
         this.xA = xA;
         this.yA = yA;
         this.xB = xB;
         this.yB = yB;
+        main();
     }
 
     Double fx11(){

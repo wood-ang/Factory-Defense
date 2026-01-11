@@ -1,4 +1,4 @@
-package com.wood.FactoryDefense.Curve;
+package com.wood.FactoryDefense;
 
 public class Coordinate {
     public Double x;

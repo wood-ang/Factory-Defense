@@ -1,7 +1,12 @@
 package com.wood.FactoryDefense;
 
 public class StaticData {
-    public static long GameManagerFPS = 20;
+    public static long  GameManagerFPS = 20;
+    public static long  CurveLaoderFPS = 60;
+    public static long  CurveManagerFPS_true = 0;
+    public static Float fontX =50f;
+    public static Float fontY =100f;
+
 }
 
 
