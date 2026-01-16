@@ -19,6 +19,7 @@ public class StaticData {
     public static float cameraZoomMax = 6f;
     public static float cameraZoomMin = 0.25f;
     //************************************************************************//
+    public static int times = 0;
     //************************************************************************//
 }
 

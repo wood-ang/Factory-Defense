@@ -7,16 +7,15 @@ import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
-import com.badlogic.gdx.math.Vector3;
 import com.badlogic.gdx.utils.ScreenUtils;
-import com.wood.FactoryDefense.kotlin.CurveManager;
+import com.wood.FactoryDefense.kotlin.Block.WorldMap;
+import com.wood.FactoryDefense.kotlin.Manager.CurveManager;
 import com.wood.FactoryDefense.kotlin.GameInput;
-import com.wood.FactoryDefense.kotlin.GameManager;
-import com.wood.FactoryDefense.kotlin.Processor;
-
+import com.wood.FactoryDefense.kotlin.Manager.GameManager;
+import com.wood.FactoryDefense.kotlin.Manager.Processor;
 import static com.wood.FactoryDefense.StaticData.*;
-import static com.wood.FactoryDefense.kotlin.GameManager.GameManagerFPS_true;
-import static com.wood.FactoryDefense.kotlin.KeyManagerKt.*;
+import static com.wood.FactoryDefense.kotlin.Manager.GameManager.GameManagerFPS_true;
+import static java.net.NetworkInterface.getByIndex;
 
 public class Main extends ApplicationAdapter {
 
@@ -24,6 +23,8 @@ public class Main extends ApplicationAdapter {
     private SpriteBatch batch;
     private Texture image;
     private BitmapFont font;
+    private Texture cameraCenter;
+    public static WorldMap worldMap;
 
     @Override
     public void create() {
@@ -35,6 +36,10 @@ public class Main extends ApplicationAdapter {
         // 初始化SpriteBatch和字体
         batch = new SpriteBatch();
         font = new BitmapFont(); // 默认字体
+
+        //其余初始化
+        worldMap = new WorldMap(4,4);
+        cameraCenter = new Texture("BaseBuild.png");
 
         Gdx.input.setInputProcessor(new Processor());
 
@@ -62,7 +67,11 @@ public class Main extends ApplicationAdapter {
 
     @Override
     public void render() {
-        input();
+        try {
+            input();
+        } catch (InterruptedException e) {
+            throw new RuntimeException(e);
+        }
         // 清空屏幕
         ScreenUtils.clear(0.15f, 0.15f, 0.2f, 1f);
 
@@ -77,6 +86,12 @@ public class Main extends ApplicationAdapter {
             fontX_ture,
             fontY_ture
         );
+
+        for (int i1 = 0 ;worldMap.size() < 0 ; i1++) {
+            for (int i2 = 0 ;worldMap.getByIndex(i1).size() < 0 ; i2++) {
+                (worldMap.chunks[i1]).blocks[i2].flasher();
+            }
+        }
 
         camera.zoom = cameraZoom_ture;
 
@@ -99,27 +114,22 @@ public class Main extends ApplicationAdapter {
         Gdx.input.setInputProcessor(null);
     }
 
-    private void input() {
+    private void input() throws InterruptedException {
         // 使用 Gdx.input 来获取输入
         if (Gdx.input.isKeyPressed(Input.Keys.W)) {
-            KeyW();
+            com.wood.FactoryDefense.kotlin.Manager.KeyManagerKt.KeyW();
         }
         if (Gdx.input.isKeyPressed(Input.Keys.S)) {
-            KeyS();
+            com.wood.FactoryDefense.kotlin.Manager.KeyManagerKt.KeyS();
         }
         if (Gdx.input.isKeyPressed(Input.Keys.A)) {
-            KeyA();
+            com.wood.FactoryDefense.kotlin.Manager.KeyManagerKt.KeyA();
         }
         if (Gdx.input.isKeyPressed(Input.Keys.D)) {
-            KeyD();
+            com.wood.FactoryDefense.kotlin.Manager.KeyManagerKt.KeyD();
         }
 
-        try {
-            // 让线程休眠200ms
-            Thread.sleep(25);
-        } catch (InterruptedException e) {
-            e.printStackTrace(); // 异常处理
-        }
+        Thread.sleep(25);
     }
 
 

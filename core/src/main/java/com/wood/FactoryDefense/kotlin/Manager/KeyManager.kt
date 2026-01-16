@@ -1,4 +1,4 @@
-package com.wood.FactoryDefense.kotlin
+package com.wood.FactoryDefense.kotlin.Manager
 
 import com.badlogic.gdx.InputProcessor
 import com.wood.FactoryDefense.StaticData.*
