@@ -11,15 +11,13 @@ import com.badlogic.gdx.utils.ScreenUtils;
 import com.wood.FactoryDefense.kotlin.CurveManager;
 import com.wood.FactoryDefense.kotlin.GameInput;
 import com.wood.FactoryDefense.kotlin.GameManager;
-import com.wood.FactoryDefense.StaticData.*;
 
 import static com.wood.FactoryDefense.StaticData.*;
 import static com.wood.FactoryDefense.kotlin.GameManager.GameManagerFPS_true;
+import static com.wood.FactoryDefense.kotlin.KeyManagerKt.*;
 
 public class Main extends ApplicationAdapter {
 
-    public static float fontX_ture = 50f;
-    public static float fontY_ture = 100f;
     private OrthographicCamera camera;
     private SpriteBatch batch;
     private Texture image;
@@ -89,27 +87,25 @@ public class Main extends ApplicationAdapter {
     private void input() {
         // 使用 Gdx.input 来获取输入
         if (Gdx.input.isKeyPressed(Input.Keys.W)) {
-            fontY += 50;
-            System.out.println("[fontY] " + fontY);
+            KeyW();
         }
         if (Gdx.input.isKeyPressed(Input.Keys.S)) {
-            fontY -= 50;
-            System.out.println("[fontY] " + fontY);
+            KeyS();
         }
         if (Gdx.input.isKeyPressed(Input.Keys.A)) {
-            fontX -= 50;
-            System.out.println("[fontX] " + fontX);
+            KeyA();
         }
         if (Gdx.input.isKeyPressed(Input.Keys.D)) {
-            fontX += 50;
-            System.out.println("[fontX] " + fontX);
+            KeyD();
         }
 
         try {
             // 让线程休眠200ms
-            Thread.sleep(200);
+            Thread.sleep(25);
         } catch (InterruptedException e) {
             e.printStackTrace(); // 异常处理
         }
     }
+
+
 }
