@@ -7,10 +7,12 @@ import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
+import com.badlogic.gdx.math.Vector3;
 import com.badlogic.gdx.utils.ScreenUtils;
 import com.wood.FactoryDefense.kotlin.CurveManager;
 import com.wood.FactoryDefense.kotlin.GameInput;
 import com.wood.FactoryDefense.kotlin.GameManager;
+import com.wood.FactoryDefense.kotlin.Processor;
 
 import static com.wood.FactoryDefense.StaticData.*;
 import static com.wood.FactoryDefense.kotlin.GameManager.GameManagerFPS_true;
@@ -34,15 +36,20 @@ public class Main extends ApplicationAdapter {
         batch = new SpriteBatch();
         font = new BitmapFont(); // 默认字体
 
+        Gdx.input.setInputProcessor(new Processor());
+
+
         image = new Texture("libgdx.png");  // 这里加载图片
 
-        // 设置输入处理器，直接使用 InputProcessor
+        // 设置输入处理器
         new Thread(new GameInput()).start();
 
         // 注意：GameManager 和 CurveManager 需要根据实际情况调整
         // 如果它们是单例或静态类，需要相应修改
-        Thread thread1 = new Thread(new GameManager());thread1.start();
-        Thread thread2 = new Thread(new CurveManager());thread2.start();
+        Thread thread1 = new Thread(new GameManager());
+        thread1.start();
+        Thread thread2 = new Thread(new CurveManager());
+        thread2.start();
     }
 
     @Override
@@ -70,6 +77,14 @@ public class Main extends ApplicationAdapter {
             fontX_ture,
             fontY_ture
         );
+
+        camera.zoom = cameraZoom_ture;
+
+        camera.position.x = fontX_ture;
+        camera.position.y = fontY_ture;
+
+        camera.update();
+
         batch.draw(image, 140f, 210f);
 
         batch.end();

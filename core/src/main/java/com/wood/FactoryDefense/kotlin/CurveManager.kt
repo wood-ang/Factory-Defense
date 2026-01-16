@@ -18,10 +18,10 @@ class CurveManager : Runnable {
             //***************************************************
             Thread.sleep(1000 / CurveLaoderFPS)
             //***************************************************
-            fontX_ture += ((fontX - fontX_ture) * 0.2).toFloat()
-            fontY_ture += ((fontY - fontY_ture) * 0.2).toFloat()
+            fontX_ture += ((fontX - fontX_ture) * 0.05f)
+            fontY_ture += ((fontY - fontY_ture) * 0.05f)
 
-
+            cameraZoom_ture += ((cameraZoom - cameraZoom_ture) * 0.05f)
             //***************************************************
             CurveManagerFPS_true = (1000 / (System.currentTimeMillis() - StartTime))
         }

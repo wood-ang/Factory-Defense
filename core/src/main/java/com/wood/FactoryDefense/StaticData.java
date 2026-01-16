@@ -14,6 +14,12 @@ public class StaticData {
     public static float fontX_ture = 50f;
     public static float fontY_ture = 100f;
     //************************************************************************//
+    public static float cameraZoom = 1f;
+    public static float cameraZoom_ture = 1f;
+    public static float cameraZoomMax = 6f;
+    public static float cameraZoomMin = 0.25f;
+    //************************************************************************//
+    //************************************************************************//
 }
 
 
