@@ -8,6 +8,7 @@ class WorldMap(
     val height: Int
 ) {
 
+    @JvmField
     var chunks: MutableList<Chunk> = MutableList(width * height) { Chunk() }
 
     fun size()= width * height

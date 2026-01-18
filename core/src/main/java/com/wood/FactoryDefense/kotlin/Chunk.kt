@@ -1,8 +1,7 @@
 package com.wood.FactoryDefense.kotlin
 
 import com.wood.FactoryDefense.Coordinate
-import com.wood.FactoryDefense.kotlin.Block.BaseBlock
-import com.wood.FactoryDefense.kotlin.Block.BaseBuildingBlock
+import com.wood.FactoryDefense.kotlin.Block.*
 
 class Chunk{
     val width: Int = 16
@@ -10,8 +9,9 @@ class Chunk{
 
     var AlwaysLoadedChunk = false
 
+     @JvmField
      val blocks: MutableList<BaseBlock> =
-        MutableList(width * height) { BaseBuildingBlock() }
+        MutableList(width * height) { Air() }
 
 
     private fun index(x: Int, y: Int): Int {

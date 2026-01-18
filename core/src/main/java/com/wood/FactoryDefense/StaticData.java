@@ -1,15 +1,21 @@
 package com.wood.FactoryDefense;
 
-public class StaticData {
-    public static long  GameManagerFPS = 20;
-    public static long  CurveLaoderFPS = 60;
-    public static long  CurveManagerFPS_true = 0;
+import com.badlogic.gdx.graphics.Texture;
+import com.wood.FactoryDefense.kotlin.Block.BaseBlock;
+import com.wood.FactoryDefense.kotlin.Block.NULL;
+import com.wood.FactoryDefense.kotlin.Block.WorldMap;
+import org.jetbrains.annotations.NotNull;
 
+public class StaticData {
+    public static long GameManagerFPS = 20;
+    public static long CurveLaoderFPS = 60;
+    public static long DrawManagerFPS2 = 0;
+    public static long CurveManagerFPS_true = 0;
 
 
     //************************************************************************//
-    public static Float fontX =50f;
-    public static Float fontY =100f;
+    public static Float fontX = 50f;
+    public static Float fontY = 100f;
 
     public static float fontX_ture = 50f;
     public static float fontY_ture = 100f;
@@ -19,8 +25,35 @@ public class StaticData {
     public static float cameraZoomMax = 6f;
     public static float cameraZoomMin = 0.25f;
     //************************************************************************//
-    public static int times = 0;
+    public static float mouseX = 0f;
+    public static float mouseY = 0f;
+
+    public static boolean mouseLeft = false;
+    public static boolean mouseRight = false;
+    public static boolean mouseMIDDLE = false;
+    public static boolean KeyQ = false;
+    public static boolean KeyW = false;
+    public static boolean KeyA = false;
+    public static boolean KeyS = false;
+    public static boolean KeyD = false;
+    public static boolean KeyE = false;
+    public static boolean KeyR = false;
+    public static boolean KeyT = false;
+    public static boolean KeyY = false;
+    public static boolean KeyU = false;
+    public static boolean KeyI = false;
+    public static boolean KeyO = false;
+    public static boolean KeyP = false;
     //************************************************************************//
+    public static WorldMap worldMap;
+    //************************************************************************//
+    public static Texture textureAir;
+    public static Texture textureBaseBlock;
+    public static Texture textureStone;
+    //************************************************************************//
+    public static boolean debug = true;
+    //************************************************************************//
+    public static BaseBlock choose;
 }
 
 
