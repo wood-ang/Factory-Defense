@@ -28,7 +28,7 @@ class Main : ApplicationAdapter() {
     lateinit var font: BitmapFont
     lateinit var cameraCenter: Texture
     private val inputProcessor: Processor = Processor()
-    val curve = ThreadCurve(1000000, 1.0, 100.0,0.05,20)
+    val curve = ThreadCurve(3000, 1.0, 100.0,0.06,20)
 
 
     override fun create() {
@@ -122,22 +122,33 @@ class Main : ApplicationAdapter() {
         for (i1 in 0 until worldMap.size()) {
             for (i2 in 0 until worldMap.getByIndex(i1).size()) {
 
+                    // 获取当前方块坐标
+                    val x = ((worldMap.indexToCoordinate(i1).x * 16) + worldMap.chunks[i1].indexToCoordinate(i2).x).toFloat() * 32f
+                    val y = ((worldMap.indexToCoordinate(i1).y * 16) + worldMap.chunks[i1].indexToCoordinate(i2).y).toFloat() * 32f
+
+                    // 绘制texture
+                    batchDraw.draw(
+                        worldMap.chunks[i1].blocks[i2].texture, x, y
+                    )
+
+                    if (mouseX in x..(x + 32f) && mouseY in y..(y + 32f)) {   //判断是否hovered
+                        worldMap.chunks[i1].blocks[i2].isHovered = true
+                    } else {
+                        worldMap.chunks[i1].blocks[i2].isHovered = false
+                    }
+            }
+        }
+        for (i1 in 0 until worldMap.size()) {
+            for (i2 in 0 until worldMap.getByIndex(i1).size()) {
                 // 获取当前方块坐标
                 val x = ((worldMap.indexToCoordinate(i1).x * 16) + worldMap.chunks[i1].indexToCoordinate(i2).x).toFloat() * 32f
                 val y = ((worldMap.indexToCoordinate(i1).y * 16) + worldMap.chunks[i1].indexToCoordinate(i2).y).toFloat() * 32f
-
-                // 绘制texture
-                batchDraw.draw(
-                    worldMap.chunks[i1].blocks[i2].texture, x, y
-                )
-
-
                 if (worldMap.chunks[i1].blocks[i2].isHovered) {
 
-                    val thread = Thread(curve)
+                    Thread(curve).start()
                     if (!(lastHovered1 == i1 && lastHovered2 == i2)) {
-                        curve.tureValue = .0
-                        thread.start()
+                        print("${x}\n${y}\n")
+                        curve.reStart()
                     }
 
                     batchDraw.setColor(1f, 1f, 1f, ((curve.tureValue)/100).toFloat())
@@ -148,29 +159,17 @@ class Main : ApplicationAdapter() {
                         batchDraw.setColor(1f, 1f, 1f, ((curve.tureValue)/200).toFloat())
                         batchDraw.draw(choose.texture, x, y)
                         batchDraw.setColor(1f, 1f, 1f, 1f)
-
                     }
 
                     batchDraw.setColor(1f, 1f, 1f, 1f)
                 }
-
-                if (mouseX in x..(x + 32f) && mouseY in y..(y + 32f)) {   //判断是否hovered
-                    worldMap.chunks[i1].blocks[i2].isHovered = true
-                    lastHovered1 = i1
-                    lastHovered2 = i2
-                } else {
-                    worldMap.chunks[i1].blocks[i2].isHovered = false
-                }
-            }
-        }
-        for (i1 in 0 until worldMap.size()) {
-            for (i2 in 0 until worldMap.getByIndex(i1).size()) {
-                // 获取当前方块坐标
-                val x = ((worldMap.indexToCoordinate(i1).x * 16) + worldMap.chunks[i1].indexToCoordinate(i2).x).toFloat() * 32f
-                val y = ((worldMap.indexToCoordinate(i1).y * 16) + worldMap.chunks[i1].indexToCoordinate(i2).y).toFloat() * 32f
-
                 if (mouseX in x..(x + 32f) && mouseY in y..(y + 32f)) {
                     font.draw(batchDraw, worldMap.chunks[i1].blocks[i2].name, mouseX, mouseY)
+                }
+
+                if (mouseX in x..(x + 32f) && mouseY in y..(y + 32f)) {   //判断是否hovered
+                    lastHovered1 = i1
+                    lastHovered2 = i2
                 }
             }
         }

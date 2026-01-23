@@ -11,7 +11,7 @@ class Chunk{
 
      @JvmField
      val blocks: MutableList<BaseBlock> =
-        MutableList(width * height) { Air() }
+        MutableList(width * height) { BaseBuildingBlock() }
 
 
     private fun index(x: Int, y: Int): Int {
