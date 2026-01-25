@@ -2,8 +2,6 @@ package com.wood.FactoryDefense.kotlin.Manager
 
 import com.wood.FactoryDefense.StaticData.*
 import com.wood.FactoryDefense.kotlin.Block.Air
-import com.wood.FactoryDefense.kotlin.Block.BaseBuildingBlock
-import com.wood.FactoryDefense.kotlin.Block.NULL
 import com.wood.FactoryDefense.kotlin.Manager.Direction.*
 import kotlin.math.sqrt
 

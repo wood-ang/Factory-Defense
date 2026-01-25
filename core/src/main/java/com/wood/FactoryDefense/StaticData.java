@@ -1,10 +1,11 @@
 package com.wood.FactoryDefense;
 
 import com.badlogic.gdx.graphics.Texture;
-import com.wood.FactoryDefense.kotlin.Block.BaseBlock;
-import com.wood.FactoryDefense.kotlin.Block.NULL;
+import com.badlogic.gdx.graphics.g2d.NinePatch;
+import com.badlogic.gdx.graphics.g2d.TextureRegion;
+import com.wood.FactoryDefense.kotlin.Block.BasicBlock;
 import com.wood.FactoryDefense.kotlin.Block.WorldMap;
-import org.jetbrains.annotations.NotNull;
+import com.wood.FactoryDefense.kotlin.Manager.UIManager;
 
 public class StaticData {
     public static long GameManagerFPS = 20;
@@ -44,16 +45,22 @@ public class StaticData {
     public static boolean KeyI = false;
     public static boolean KeyO = false;
     public static boolean KeyP = false;
+
+    public static UIManager uiManager = new UIManager();
     //************************************************************************//
     public static WorldMap worldMap;
     //************************************************************************//
     public static Texture textureAir;
     public static Texture textureBaseBlock;
     public static Texture textureStone;
+    public static Texture textureUIPanle;
+        public static TextureRegion textureRegion;
+        public static NinePatch ninePatch;
+
     //************************************************************************//
     public static boolean debug = true;
     //************************************************************************//
-    public static BaseBlock choose;
+    public static BasicBlock choose;
 }
 
 

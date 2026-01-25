@@ -6,18 +6,22 @@ import com.badlogic.gdx.graphics.OrthographicCamera
 import com.badlogic.gdx.graphics.Pixmap
 import com.badlogic.gdx.graphics.Texture
 import com.badlogic.gdx.graphics.g2d.BitmapFont
+import com.badlogic.gdx.graphics.g2d.NinePatch
 import com.badlogic.gdx.graphics.g2d.SpriteBatch
+import com.badlogic.gdx.graphics.g2d.TextureRegion
 import com.badlogic.gdx.math.Matrix4
 import com.badlogic.gdx.math.Vector3
 import com.badlogic.gdx.utils.ScreenUtils
 import com.wood.FactoryDefense.StaticData.*
 import com.wood.FactoryDefense.kotlin.Block.NULL
 import com.wood.FactoryDefense.kotlin.Block.WorldMap
-import com.wood.FactoryDefense.kotlin.Chunk
 import com.wood.FactoryDefense.kotlin.Curve.ThreadCurve
 import com.wood.FactoryDefense.kotlin.Manager.CurveManager
 import com.wood.FactoryDefense.kotlin.Manager.GameManager
 import com.wood.FactoryDefense.kotlin.Manager.Processor
+import com.wood.FactoryDefense.kotlin.Manager.UIManager
+import com.wood.FactoryDefense.kotlin.UI.UIButton
+import com.wood.FactoryDefense.kotlin.UI.UIPanel
 
 class Main : ApplicationAdapter() {
 
@@ -28,7 +32,7 @@ class Main : ApplicationAdapter() {
     lateinit var font: BitmapFont
     lateinit var cameraCenter: Texture
     private val inputProcessor: Processor = Processor()
-    val curve = ThreadCurve(3000, 1.0, 100.0,0.06,20)
+    val curve = ThreadCurve(3000, 1.0, 100.0,0.2,20)
 
 
     override fun create() {
@@ -40,6 +44,9 @@ class Main : ApplicationAdapter() {
         textureAir = createTransparentTexture(32, 32)
         textureBaseBlock = Texture("BaseBuild.png")
         textureStone = Texture("Stone.png")
+        textureUIPanle = Texture("UIPanel.png")
+        textureRegion = TextureRegion(textureUIPanle)
+        ninePatch = NinePatch(textureRegion)
 
         // 初始化相机并设置视口大小
         camera.position.set(camera.viewportWidth / 2, camera.viewportHeight / 2, 0f)
@@ -56,17 +63,28 @@ class Main : ApplicationAdapter() {
         // --- 其余初始化 ---
         hovered = Texture("Hovered.png")
         choose = NULL()
-        Gdx.input.setInputProcessor(inputProcessor);
+        Gdx.input.setInputProcessor(inputProcessor)
+        uiManager = UIManager()
 
 
         // --- 启动线程 ---
         createThreads()
-
+        createUI()
     }
 
     private fun createThreads() {
         Thread(GameManager()).start()
         Thread(CurveManager()).start()
+    }
+
+    private fun createUI(){
+
+
+        // 创建一个面板
+        val panel = UIPanel(300f, 150f, 400f, 300f)
+
+        uiManager.addRoot(panel)
+
     }
 
     override fun resize(width: Int, height: Int) {
@@ -147,7 +165,6 @@ class Main : ApplicationAdapter() {
 
                     Thread(curve).start()
                     if (!(lastHovered1 == i1 && lastHovered2 == i2)) {
-                        print("${x}\n${y}\n")
                         curve.reStart()
                     }
 
@@ -189,8 +206,7 @@ class Main : ApplicationAdapter() {
         batchDraw.projectionMatrix = Matrix4().setToOrtho2D(0f, 0f, Gdx.graphics.width.toFloat(), Gdx.graphics.height.toFloat())
         font.data.setScale(1f)
 
-
-
+        uiManager.render(batchDraw)
 
         if (debug) {
             font.draw(

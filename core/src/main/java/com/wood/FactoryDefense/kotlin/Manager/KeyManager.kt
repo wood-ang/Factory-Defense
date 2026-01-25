@@ -5,7 +5,7 @@ import com.badlogic.gdx.Input
 import com.badlogic.gdx.Input.Keys.*
 import com.badlogic.gdx.InputProcessor
 import com.wood.FactoryDefense.StaticData.*
-import com.wood.FactoryDefense.kotlin.Block.BaseBuildingBlock
+import com.wood.FactoryDefense.kotlin.Block.BasicBuildingBlock
 import com.wood.FactoryDefense.kotlin.Block.NULL
 import com.wood.FactoryDefense.kotlin.Block.Stone
 
@@ -34,15 +34,16 @@ class Processor : InputProcessor {
             }
             TAB -> {
                 chooseNumber += 1
-                if (chooseNumber == 3)chooseNumber = 0
+                if (!(chooseNumber < 3))chooseNumber = 0
                 choose = when(chooseNumber){
                     0 -> NULL()
-                    1 -> BaseBuildingBlock()
+                    1 -> BasicBuildingBlock()
                     2 -> Stone()
                     else -> {
                         NULL()
                     }
                 }
+                print(chooseNumber)
             }
         }
         return true
@@ -82,6 +83,7 @@ class Processor : InputProcessor {
             Input.Buttons.RIGHT -> mouseRight = true
             Input.Buttons.MIDDLE -> mouseMIDDLE = true
         }
+        uiManager.touchDown(screenX.toFloat(), Gdx.graphics.height - screenY.toFloat())
         return true
     }
 

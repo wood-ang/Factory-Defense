@@ -10,8 +10,8 @@ class Chunk{
     var AlwaysLoadedChunk = false
 
      @JvmField
-     val blocks: MutableList<BaseBlock> =
-        MutableList(width * height) { BaseBuildingBlock() }
+     val blocks: MutableList<BasicBlock> =
+        MutableList(width * height) { BasicBuildingBlock() }
 
 
     private fun index(x: Int, y: Int): Int {
@@ -21,19 +21,19 @@ class Chunk{
         return y * width + x
     }
 
-    fun setByXY(x: Int, y: Int, value: BaseBlock) {
+    fun setByXY(x: Int, y: Int, value: BasicBlock) {
         blocks[index(x, y)] = value
     }
 
-    fun setByCoordinate(coordinate: Coordinate, value: BaseBlock) {
+    fun setByCoordinate(coordinate: Coordinate, value: BasicBlock) {
         setByXY(coordinate.x.toInt(), coordinate.y.toInt(), value)
     }
 
-    fun getByXY(x: Int, y: Int): BaseBlock {
+    fun getByXY(x: Int, y: Int): BasicBlock {
         return blocks[index(x, y)]
     }
 
-    fun getByCoordinate(coordinate: Coordinate): BaseBlock {
+    fun getByCoordinate(coordinate: Coordinate): BasicBlock {
         return getByXY(coordinate.x.toInt(), coordinate.y.toInt())
     }
 

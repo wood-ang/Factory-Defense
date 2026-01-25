@@ -3,7 +3,7 @@ package com.wood.FactoryDefense.kotlin.Block
 import com.badlogic.gdx.graphics.Texture
 import com.wood.FactoryDefense.StaticData.*
 
-abstract class BaseBlock {
+abstract class BasicBlock {
 
 
     abstract fun flasher()

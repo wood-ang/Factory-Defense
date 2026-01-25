@@ -1,9 +1,8 @@
 package com.wood.FactoryDefense.kotlin.Block
 
-import com.badlogic.gdx.graphics.Texture
 import com.wood.FactoryDefense.StaticData.*
 
-class NULL internal constructor() : BaseBlock() {
+class NULL internal constructor() : BasicBlock() {
     override fun flasher() {
     }
 
