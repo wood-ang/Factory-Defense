@@ -33,3 +33,14 @@
 
 请注意，大多数不特定于单个项目的任务都可以使用`name:`前缀运行，其中`name`应替换为特定项目的ID。
 例如，`core:clean`仅从`core`项目中移除`build`文件夹。
+
+## HOW TO RUN
+- Windows 终端输入
+```shell
+  .\gradlew.bat lwjgl3:run
+```
+
+- liunx 终端输入
+```shell
+  ./gradlew lwjgl3:run 
+```
