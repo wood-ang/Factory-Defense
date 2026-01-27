@@ -1,37 +1,35 @@
 # FactoryDefense
 
-A [libGDX](https://libgdx.com/) project generated with [gdx-liftoff](https://github.com/libgdx/gdx-liftoff).
+一个使用 [gdx-liftoff](https://github.com/libgdx/gdx-liftoff) 生成的 [libGDX](https://libgdx.com/) 项目。
 
-This project was generated with a template including simple application launchers and an `ApplicationAdapter` extension that draws libGDX logo.
+此项目使用了一个模板生成，该模板包含简单的应用程序启动器和一个绘制libGDX徽标的`ApplicationAdapter`扩展。
 
-## Platforms
+## 平台
 
-- `core`: Main module with the application logic shared by all platforms.
-- `lwjgl3`: Primary desktop platform using LWJGL3; was called 'desktop' in older docs.
-- `android`: Android mobile platform. Needs Android SDK.
+- `core`: 主模块，包含所有平台共享的应用程序逻辑。
+- `lwjgl3`: 主要的桌面平台，使用LWJGL3；在旧文档中称为'desktop'。
+- `android`: Android移动平台。需要Android SDK。
 
 ## Gradle
 
-This project uses [Gradle](https://gradle.org/) to manage dependencies.
-The Gradle wrapper was included, so you can run Gradle tasks using `gradlew.bat` or `./gradlew` commands.
-Useful Gradle tasks and flags:
+此项目使用 [Gradle](https://gradle.org/) 来管理依赖项。
+包含了Gradle包装器，因此您可以使用`gradlew.bat`或`./gradlew`命令运行Gradle任务。
+有用的Gradle任务和标志：
 
-- `--continue`: when using this flag, errors will not stop the tasks from running.
-- `--daemon`: thanks to this flag, Gradle daemon will be used to run chosen tasks.
-- `--offline`: when using this flag, cached dependency archives will be used.
-- `--refresh-dependencies`: this flag forces validation of all dependencies. Useful for snapshot versions.
-- `android:lint`: performs Android project validation.
-- `build`: builds sources and archives of every project.
-- `cleanEclipse`: removes Eclipse project data.
-- `cleanIdea`: removes IntelliJ project data.
-- `clean`: removes `build` folders, which store compiled classes and built archives.
-- `eclipse`: generates Eclipse project data.
-- `idea`: generates IntelliJ project data.
-- `lwjgl3:jar`: builds application's runnable jar, which can be found at `lwjgl3/build/libs`.
-- `lwjgl3:run`: starts the application.
-- `test`: runs unit tests (if any).
+- `--continue`: 使用此标志时，错误不会阻止任务运行。
+- `--daemon`: 多亏此标志，Gradle守护进程将用于运行选定的任务。
+- `--offline`: 使用此标志时，将使用缓存的依赖项存档。
+- `--refresh-dependencies`: 此标志强制验证所有依赖项。对于快照版本很有用。
+- `android:lint`: 执行Android项目验证。
+- `build`: 构建每个项目的源代码和存档。
+- `cleanEclipse`: 移除Eclipse项目数据。
+- `cleanIdea`: 移除IntelliJ项目数据。
+- `clean`: 移除`build`文件夹，该文件夹存储编译的类和构建的存档。
+- `eclipse`: 生成Eclipse项目数据。
+- `idea`: 生成IntelliJ项目数据。
+- `lwjgl3:jar`: 构建应用程序的可运行jar，可在`lwjgl3/build/libs`找到。
+- `lwjgl3:run`: 启动应用程序。
+- `test`: 运行单元测试（如果有）。
 
-Note that most tasks that are not specific to a single project can be run with `name:` prefix, where the `name` should be replaced with the ID of a specific project.
-For example, `core:clean` removes `build` folder only from the `core` project.
-
-## 
+请注意，大多数不特定于单个项目的任务都可以使用`name:`前缀运行，其中`name`应替换为特定项目的ID。
+例如，`core:clean`仅从`core`项目中移除`build`文件夹。
