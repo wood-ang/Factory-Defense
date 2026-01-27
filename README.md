@@ -1,8 +1,6 @@
 # FactoryDefense
 
-一个使用 [gdx-liftoff](https://github.com/libgdx/gdx-liftoff) 生成的 [libGDX](https://libgdx.com/) 项目。
-
-此项目使用了一个模板生成，该模板包含简单的应用程序启动器和一个绘制libGDX徽标的`ApplicationAdapter`扩展。
+开源流水线游戏 使用 [gdx-liftoff](https://github.com/libgdx/gdx-liftoff) 生成的 [libGDX](https://libgdx.com/) 项目。
 
 ## 平台
 
