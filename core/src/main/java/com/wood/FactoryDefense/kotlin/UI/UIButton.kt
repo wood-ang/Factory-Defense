@@ -10,21 +10,9 @@ import com.badlogic.gdx.graphics.g2d.SpriteBatch
  * 通常用于菜单、对话框、控制面板等交互界面。
  */
 class UIButton(
-    var text: String,      // 按钮显示的文本内容
-    x: Float,              // 相对于父容器的X坐标
-    y: Float,              // 相对于父容器的Y坐标
-    w: Float,              // 按钮宽度
-    h: Float               // 按钮高度
-) : BasicUIBlock() {
+    shape: UIShape, layout: UILayout
+) : BasicUIBlock(shape, layout) {
 
-    init {
-        // 初始化按钮的几何形状
-        // 注意：所有坐标均为相对于父容器的局部坐标
-        shape.x = x
-        shape.y = y
-        shape.width = w
-        shape.height = h
-    }
 
     /**
      * 渲染按钮到屏幕
@@ -56,7 +44,7 @@ class UIButton(
      * font.draw(batch, text, textX, textY)
      * ```
      */
-    override fun render(batch: SpriteBatch, worldX: Float, worldY: Float) {
+    override fun render(batch: SpriteBatch) {
         // worldX/worldY 是按钮左下角在屏幕上的绝对坐标
         // 此处预留渲染实现，需要添加纹理资源和字体管理
 

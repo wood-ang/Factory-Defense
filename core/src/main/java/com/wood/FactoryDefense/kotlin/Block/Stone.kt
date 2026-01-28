@@ -1,6 +1,6 @@
 package com.wood.FactoryDefense.kotlin.Block
 
-import com.wood.FactoryDefense.StaticData.*
+import com.wood.FactoryDefense.kotlin.StaticData.StaticData.*
 
 class Stone: BasicBlock() {
     override fun flasher() {

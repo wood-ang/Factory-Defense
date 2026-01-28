@@ -1,9 +1,11 @@
 package com.wood.FactoryDefense.kotlin.Manager
 
-import com.wood.FactoryDefense.StaticData.*
+import com.wood.FactoryDefense.kotlin.StaticData.StaticData.*
 import com.wood.FactoryDefense.kotlin.Block.Air
 import com.wood.FactoryDefense.kotlin.Manager.Direction.*
 import kotlin.math.sqrt
+import com.wood.FactoryDefense.kotlin.StaticData.StaticUIData.*
+import com.wood.FactoryDefense.kotlin.StaticData.StaticUIData.uiManager
 
 class GameManager : Runnable {
     override fun run() {
@@ -14,6 +16,9 @@ class GameManager : Runnable {
 
             blockFlasher()
             Key()
+
+            uiManager.roots[0].layout.x = PanelY_ture
+
 
             //***************************************************
             GameManagerFPS_true = (1000 / (System.currentTimeMillis() - StartTime))
@@ -47,7 +52,10 @@ class GameManager : Runnable {
             }
         }
     }
-    var direction: Direction = Direction.D
+
+
+
+    var direction: Direction = D
 
     fun Key(){
         if ((KeyW && !KeyS)&&(!KeyA && !KeyD)){

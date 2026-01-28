@@ -1,7 +1,7 @@
 package com.wood.FactoryDefense.kotlin.Block
 
 import com.wood.FactoryDefense.Coordinate
-import com.wood.FactoryDefense.kotlin.Chunk
+import com.wood.FactoryDefense.kotlin.Block.Chunk
 
 class WorldMap(
     val width: Int,
@@ -10,6 +10,9 @@ class WorldMap(
 
     @JvmField
     var chunks: MutableList<Chunk> = MutableList(width * height) { Chunk() }
+
+    var respawnPointX: Float = 0f
+    var respawnPointY: Float = 0f
 
     fun size()= width * height
 

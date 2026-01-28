@@ -1,11 +1,10 @@
-package com.wood.FactoryDefense;
+package com.wood.FactoryDefense.kotlin.StaticData;
 
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.NinePatch;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.wood.FactoryDefense.kotlin.Block.BasicBlock;
 import com.wood.FactoryDefense.kotlin.Block.WorldMap;
-import com.wood.FactoryDefense.kotlin.Manager.UIManager;
 
 public class StaticData {
     public static long GameManagerFPS = 20;
@@ -15,11 +14,11 @@ public class StaticData {
 
 
     //************************************************************************//
-    public static Float fontX = 50f;
-    public static Float fontY = 100f;
+    public static Float fontX;
+    public static Float fontY;
 
-    public static float fontX_ture = 50f;
-    public static float fontY_ture = 100f;
+    public static float fontX_ture;
+    public static float fontY_ture;
     //************************************************************************//
     public static float cameraZoom = 1f;
     public static float cameraZoom_ture = 1f;
@@ -46,8 +45,6 @@ public class StaticData {
     public static boolean KeyO = false;
     public static boolean KeyP = false;
 
-    public static UIManager uiManager = new UIManager();
-    //************************************************************************//
     public static WorldMap worldMap;
     //************************************************************************//
     public static Texture textureAir;

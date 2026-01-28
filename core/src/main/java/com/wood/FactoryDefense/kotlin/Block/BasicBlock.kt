@@ -1,7 +1,7 @@
 package com.wood.FactoryDefense.kotlin.Block
 
 import com.badlogic.gdx.graphics.Texture
-import com.wood.FactoryDefense.StaticData.*
+import com.wood.FactoryDefense.kotlin.StaticData.StaticData.*
 
 abstract class BasicBlock {
 

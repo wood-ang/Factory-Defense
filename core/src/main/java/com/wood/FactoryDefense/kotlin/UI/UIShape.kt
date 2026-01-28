@@ -1,5 +1,6 @@
 package com.wood.FactoryDefense.kotlin.UI
 
+
 /**
  * UI形状基类，用于定义UI元素的基本矩形区域
  *
@@ -18,10 +19,9 @@ package com.wood.FactoryDefense.kotlin.UI
  * @property height UI元素的高度，默认50f
  */
 class UIShape(
-    var x: Float = 0f,      // 局部坐标X（相对于父元素或本地坐标系）
-    var y: Float = 0f,      // 局部坐标Y（相对于父元素或本地坐标系）
     var width: Float = 100f,
-    var height: Float = 50f
+    var height: Float = 50f,
+    var transparency: Float = 1f
 ) {
     /**
      * 检测给定点是否在该UI形状的世界坐标区域内
@@ -41,8 +41,8 @@ class UIShape(
      * val isInside = uiShape.contains(120f, 130f, container.x, container.y)
      * ```
      */
-    fun contains(px: Float, py: Float, worldX: Float, worldY: Float): Boolean {
-        return px >= worldX && px <= worldX + width &&
-            py >= worldY && py <= worldY + height
+    fun contains(px: Float, py: Float, layout: UILayout): Boolean {
+        return px >= layout.x && px <= layout.x + width &&
+            py >= layout.y && py <= layout.y + height
     }
 }

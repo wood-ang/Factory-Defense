@@ -4,10 +4,11 @@ import com.badlogic.gdx.Gdx
 import com.badlogic.gdx.Input
 import com.badlogic.gdx.Input.Keys.*
 import com.badlogic.gdx.InputProcessor
-import com.wood.FactoryDefense.StaticData.*
+import com.wood.FactoryDefense.kotlin.StaticData.StaticData.*
 import com.wood.FactoryDefense.kotlin.Block.BasicBuildingBlock
 import com.wood.FactoryDefense.kotlin.Block.NULL
 import com.wood.FactoryDefense.kotlin.Block.Stone
+import com.wood.FactoryDefense.kotlin.StaticData.StaticUIData.*
 
 class Processor : InputProcessor {
 
@@ -44,6 +45,21 @@ class Processor : InputProcessor {
                     }
                 }
                 print(chooseNumber)
+            }
+            P -> {
+                print("P")
+                debug = !debug
+                if (debug){
+                    Panely += 300f
+                    debugFontY.data += 300f
+                }else{
+                    Panely -= 300f
+                    debugFontY.data -= 300f
+                }
+            }
+            V -> {
+                fontX = worldMap.respawnPointX
+                fontY = worldMap.respawnPointY
             }
         }
         return true

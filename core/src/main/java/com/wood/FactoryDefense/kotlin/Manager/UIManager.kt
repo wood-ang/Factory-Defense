@@ -5,7 +5,7 @@ import com.wood.FactoryDefense.kotlin.UI.BasicUIBlock
 
 class UIManager {
 
-    private val roots = mutableListOf<BasicUIBlock>()
+    public val roots = mutableListOf<BasicUIBlock>()
 
 
     fun addRoot(ui: BasicUIBlock) {

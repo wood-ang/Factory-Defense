@@ -1,6 +1,6 @@
 package com.wood.FactoryDefense.kotlin.Curve
 
-import com.wood.FactoryDefense.StaticData.*
+import com.wood.FactoryDefense.kotlin.StaticData.StaticData.*
 
 class ThreadCurve (val time: Long, val begin: Double, val end: Double, val smoothingParameter : Double = 0.2, val FPS: Long = CurveLaoderFPS): Runnable {
     var tureValue: Double = begin

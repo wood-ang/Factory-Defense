@@ -1,7 +1,6 @@
-package com.wood.FactoryDefense.kotlin
+package com.wood.FactoryDefense.kotlin.Block
 
 import com.wood.FactoryDefense.Coordinate
-import com.wood.FactoryDefense.kotlin.Block.*
 
 class Chunk{
     val width: Int = 16

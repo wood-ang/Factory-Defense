@@ -1,6 +1,7 @@
 package com.wood.FactoryDefense.kotlin.Manager
 
-import com.wood.FactoryDefense.StaticData.*
+import com.wood.FactoryDefense.kotlin.StaticData.StaticData.*
+import com.wood.FactoryDefense.kotlin.StaticData.StaticUIData.*
 
 class CurveManager : Runnable {
     override fun run() {
@@ -15,10 +16,20 @@ class CurveManager : Runnable {
             //***************************************************
             fontX_ture += ((fontX - fontX_ture) * 0.05f)
             fontY_ture += ((fontY - fontY_ture) * 0.05f)
-
+            PanelY_ture += ((Panely - PanelY_ture) * 0.2f)
+            debugFontY.update()
             cameraZoom_ture += ((cameraZoom - cameraZoom_ture) * 0.05f)
             //***************************************************
             CurveManagerFPS_true = (1000 / (System.currentTimeMillis() - startTime))
         }
+    }
+}
+class CurveData(
+    val smoothingParameter: Float
+){
+    var data: Float = 0f
+    var data_ture: Float = 0f
+    fun update(){
+        data_ture += ((data - data_ture) * smoothingParameter)
     }
 }
