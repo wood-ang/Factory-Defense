@@ -19,6 +19,7 @@ import com.wood.FactoryDefense.kotlin.Curve.ThreadCurve
 import com.wood.FactoryDefense.kotlin.Manager.CurveManager
 import com.wood.FactoryDefense.kotlin.Manager.GameManager
 import com.wood.FactoryDefense.kotlin.Manager.Processor
+import com.wood.FactoryDefense.kotlin.Manager.UIManager
 import com.wood.FactoryDefense.kotlin.StaticData.StaticUIData.*
 import com.wood.FactoryDefense.kotlin.UI.Arrangement
 import com.wood.FactoryDefense.kotlin.UI.UILayout
@@ -95,7 +96,7 @@ class Main : ApplicationAdapter() {
     }
 
     private fun createUI(){
-
+        uiManager = UIManager(batchDraw)
 
         // 创建一个面板
         val panel = UIPanel(UIShape(400f, 300f), UILayout(Arrangement.Vertical, 1, x = 8f,y = 8f))
@@ -109,6 +110,9 @@ class Main : ApplicationAdapter() {
         camera.viewportWidth = width.toFloat()
         camera.viewportHeight = height.toFloat()
         camera.update() // 重新计算相机的矩阵
+
+        displayWidth = width.toFloat()
+        displayHeight = height.toFloat()
     }
 
     var lastHovered1 = 0
@@ -250,7 +254,7 @@ class Main : ApplicationAdapter() {
         batchDraw.projectionMatrix = Matrix4().setToOrtho2D(0f, 0f, Gdx.graphics.width.toFloat(), Gdx.graphics.height.toFloat())
         font.data.setScale(1f)
 
-        uiManager.render(batchDraw)
+        uiManager.render()
 
 
         font.draw(

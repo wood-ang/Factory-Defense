@@ -5,11 +5,11 @@ import com.badlogic.gdx.backends.lwjgl3.Lwjgl3ApplicationConfiguration;
 import com.wood.FactoryDefense.Main;
 
 /**
- * Launches the desktop (LWJGL3) application.
+ * 启动桌面 (LWJGL3) 应用程序。
  */
 public class Lwjgl3Launcher {
     public static void main(String[] args) {
-        if (StartupHelper.startNewJvmIfRequired()) return; // This handles macOS support and helps on Windows.
+        if (StartupHelper.startNewJvmIfRequired()) return; // 这用于处理 macOS 支持，并在 Windows 上提供帮助。
         createApplication();
     }
 
@@ -20,26 +20,21 @@ public class Lwjgl3Launcher {
     private static Lwjgl3ApplicationConfiguration getDefaultConfiguration() {
         Lwjgl3ApplicationConfiguration configuration = new Lwjgl3ApplicationConfiguration();
         configuration.setTitle("FactoryDefense");
-        //// Vsync limits the frames per second to what your hardware can display, and helps eliminate
-        //// screen tearing. This setting doesn't always work on Linux, so the line after is a safeguard.
+        //// 垂直同步将每秒帧数限制在您硬件可以显示的范围内，并有助于消除画面撕裂。此设置在 Linux 上并不总是有效，因此下一行是一个保障措施。
         configuration.useVsync(true);
-        //// Limits FPS to the refresh rate of the currently active monitor, plus 1 to try to match fractional
-        //// refresh rates. The Vsync setting above should limit the actual FPS to match the monitor.
+        //// 将 FPS 限制为当前活动显示器的刷新率，并加 1 以尝试匹配分数刷新率。上面的垂直同步设置应将实际 FPS 限制为与显示器匹配。
         configuration.setForegroundFPS(Lwjgl3ApplicationConfiguration.getDisplayMode().refreshRate + 1);
-        //// If you remove the above line and set Vsync to false, you can get unlimited FPS, which can be
-        //// useful for testing performance, but can also be very stressful to some hardware.
-        //// You may also need to configure GPU drivers to fully disable Vsync; this can cause screen tearing.
+        //// 如果您移除上面的行并将垂直同步设置为 false，您将获得无限制的 FPS，这对测试性能很有用，但也可能给某些硬件带来很大压力。
+        //// 您可能还需要配置 GPU 驱动程序以完全禁用垂直同步；这可能导致画面撕裂。
 
         configuration.setWindowedMode(640, 480);
-        //// You can change these files; they are in lwjgl3/src/main/resources/ .
-        //// They can also be loaded from the root of assets/ .
+        //// 您可以更改这些文件；它们位于 lwjgl3/src/main/resources/ 目录下。
+        //// 也可以从 assets/ 的根目录加载它们。
         configuration.setWindowIcon("libgdx128.png", "libgdx64.png", "libgdx32.png", "libgdx16.png");
 
-        //// This should improve compatibility with Windows machines with buggy OpenGL drivers, Macs
-        //// with Apple Silicon that have to emulate compatibility with OpenGL anyway, and more.
-        //// This uses the dependency `com.badlogicgames.gdx:gdx-lwjgl3-angle` to function.
-        //// You can choose to remove the following line and the mentioned dependency if you want; they
-        //// are not intended for games that use GL30 (which is compatibility with OpenGL ES 3.0).
+        //// 这应该能提高与 OpenGL 驱动有问题的 Windows 机器、无论如何都必须模拟兼容 OpenGL 的 Apple Silicon Mac 等机器的兼容性。
+        //// 这依赖于 `com.badlogicgames.gdx:gdx-lwjgl3-angle` 依赖项来起作用。
+        //// 如果需要，您可以选择移除下面这行和提到的依赖项；它们并非为使用 GL30（即兼容 OpenGL ES 3.0）的游戏设计。
         configuration.setOpenGLEmulation(Lwjgl3ApplicationConfiguration.GLEmulation.ANGLE_GLES20, 0, 0);
 
         return configuration;

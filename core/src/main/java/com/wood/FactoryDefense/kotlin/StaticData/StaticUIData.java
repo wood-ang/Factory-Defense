@@ -5,7 +5,7 @@ import com.wood.FactoryDefense.kotlin.Manager.CurveData;
 import com.wood.FactoryDefense.kotlin.Manager.UIManager;
 
 public class StaticUIData {
-    public static UIManager uiManager = new UIManager();
+    public static UIManager uiManager;
 
     public static CurveData debugFontY = new CurveData(0.2f);
 

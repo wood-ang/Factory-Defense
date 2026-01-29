@@ -1,4 +1,4 @@
-package com.wood.FactoryDefense;
+package com.wood.FactoryDefense.kotlin.Curve;
 
 public class Coordinate {
     public Double x;

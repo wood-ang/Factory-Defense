@@ -9,8 +9,8 @@ abstract class BasicUIBlock (
 
     var isHovered: Boolean = false
 
-    private var parent: BasicUIBlock? = null
-    private val children = mutableListOf<BasicUIBlock>()
+    var parent: BasicUIBlock? = null
+    val children = mutableListOf<BasicUIBlock>()
 
     var onClick: (() -> Unit)? = null
 
@@ -21,17 +21,17 @@ abstract class BasicUIBlock (
 
     /* ---------------- 层级管理 ---------------- */
 
-    fun addChild(child: BasicUIBlock) {
+    fun addUIChild(child: BasicUIBlock) {
         child.parent = this
         children.add(child)
     }
 
-    fun removeChild(child: BasicUIBlock) {
+    fun removeUIChild(child: BasicUIBlock) {
         child.parent = null
         children.remove(child)
     }
 
-    fun getChildren(): List<BasicUIBlock> = children
+    fun getUIChildren(): List<BasicUIBlock> = children
 
     /* ---------------- 生命周期 ---------------- */
 
@@ -49,7 +49,7 @@ abstract class BasicUIBlock (
 
     /* ---------------- 输入 ---------------- */
 
-    fun handleClick(px: Float, py: Float) {
+    open fun handleClick(px: Float, py: Float) {
         // 先让子UI优先处理（UI层级覆盖关系）
         for (child in children.reversed()) {
             child.handleClick(mouseX, mouseY)

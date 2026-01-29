@@ -1,18 +1,16 @@
 /*
- * Copyright 2020 damios
+ * 版权所有 2020 damios
  *
- * Licensed under the Apache License, Version 2.0 (the "License");
- * you may not use this file except in compliance with the License.
- * You may obtain a copy of the License at:
+ * 根据 Apache 许可证 2.0 版本（"许可证"）授权；
+ * 除非遵守许可证，否则不得使用此文件。
+ * 您可以在以下网址获取许可证副本：
  * https://www.apache.org/licenses/LICENSE-2.0
  *
- * Unless required by applicable law or agreed to in writing, software
- * distributed under the License is distributed on an "AS IS" BASIS,
- * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- * See the License for the specific language governing permissions and
- * limitations under the License.
+ * 除非适用法律要求或书面同意，否则按"原样"分发软件，
+ * 没有任何明示或暗示的担保或条件。
+ * 请参阅许可证了解特定语言下的权限和限制。
  */
-//Note, the above license and copyright applies to this file only.
+//注意：上述许可证和版权声明仅适用于此文件。
 
 package com.wood.FactoryDefense.lwjgl3;
 
@@ -33,12 +31,11 @@ import static org.lwjgl.system.macosx.ObjCRuntime.objc_getClass;
 import static org.lwjgl.system.macosx.ObjCRuntime.sel_getUid;
 
 /**
- * Adds some utilities to ensure that the JVM was started with the
- * {@code -XstartOnFirstThread} argument, which is required on macOS for LWJGL 3
- * to function. Also helps on Windows when users have names with characters from
- * outside the Latin alphabet, a common cause of startup crashes.
+ * 提供一些实用工具，确保 JVM 是以 {@code -XstartOnFirstThread} 参数启动的，
+ * 这在 macOS 上是 LWJGL 3 正常工作的必要条件。同时帮助解决 Windows 上
+ * 用户名称包含非拉丁字母字符时的常见启动崩溃问题。
  * <br>
- * <a href="https://jvm-gaming.org/t/starting-jvm-on-mac-with-xstartonfirstthread-programmatically/57547">Based on this java-gaming.org post by kappa</a>
+ * <a href="https://jvm-gaming.org/t/starting-jvm-on-mac-with-xstartonfirstthread-programmatically/57547">基于 kappa 在 java-gaming.org 上的这篇帖子</a>
  * @author damios
  */
 public class StartupHelper {
@@ -50,41 +47,37 @@ public class StartupHelper {
     }
 
     /**
-     * Starts a new JVM if the application was started on macOS without the
-     * {@code -XstartOnFirstThread} argument. This also includes some code for
-     * Windows, for the case where the user's home directory includes certain
-     * non-Latin-alphabet characters (without this code, most LWJGL3 apps fail
-     * immediately for those users). Returns whether a new JVM was started and
-     * thus no code should be executed.
+     * 如果应用程序在 macOS 上启动时没有使用 {@code -XstartOnFirstThread} 参数，
+     * 则启动一个新的 JVM。这还包括一些针对 Windows 的代码，用于处理用户主目录
+     * 包含某些非拉丁字母字符的情况（没有此代码，大多数 LWJGL3 应用会为这些用户
+     * 立即失败）。返回是否启动了新的 JVM，从而指示是否不应在此 JVM 中执行代码。
      * <p>
-     * <u>Usage:</u>
+     * <u>用法：</u>
      *
      * <pre><code>
      * public static void main(String... args) {
-     * 	if (StartupHelper.startNewJvmIfRequired(true)) return; // This handles macOS support and helps on Windows.
-     * 	// after this is the actual main method code
+     *     if (StartupHelper.startNewJvmIfRequired(true)) return; // 这处理 macOS 支持并帮助解决 Windows 问题。
+     *     // 之后是实际的主方法代码
      * }
      * </code></pre>
      *
      * @param redirectOutput
-     *            whether the output of the new JVM should be rerouted to the
-     *            old JVM, so it can be accessed in the same place; keeps the
-     *            old JVM running if enabled
-     * @return whether a new JVM was started and thus no code should be executed
-     *         in this one
+     *            是否应将新 JVM 的输出重定向到旧 JVM，以便可以在同一位置访问；
+     *            如果启用，则保持旧 JVM 运行
+     * @return 是否启动了新的 JVM，从而指示是否不应在此 JVM 中执行代码
      */
     public static boolean startNewJvmIfRequired(boolean redirectOutput) {
         String osName = System.getProperty("os.name").toLowerCase(java.util.Locale.ROOT);
         if (!osName.contains("mac")) {
             if (osName.contains("windows")) {
-// Here, we are trying to work around an issue with how LWJGL3 loads its extracted .dll files.
-// By default, LWJGL3 extracts to the directory specified by "java.io.tmpdir", which is usually the user's home.
-// If the user's name has non-ASCII (or some non-alphanumeric) characters in it, that would fail.
-// By extracting to the relevant "ProgramData" folder, which is usually "C:\ProgramData", we avoid this.
-// We also temporarily change the "user.name" property to one without any chars that would be invalid.
-// We revert our changes immediately after loading LWJGL3 natives.
+// 这里我们尝试解决 LWJGL3 加载其提取的 .dll 文件时的问题。
+// 默认情况下，LWJGL3 提取到由 "java.io.tmpdir" 指定的目录，通常是用户的主目录。
+// 如果用户的名称包含非 ASCII（或某些非字母数字）字符，则会失败。
+// 通过提取到相关的 "ProgramData" 文件夹（通常是 "C:\ProgramData"），我们避免了此问题。
+// 我们还将 "user.name" 属性临时更改为一个不包含任何无效字符的名称。
+// 在加载 LWJGL3 原生库后，我们立即恢复我们的更改。
                 String programData = System.getenv("ProgramData");
-                if(programData == null) programData = "C:\\Temp\\"; // if ProgramData isn't set, try some fallback.
+                if(programData == null) programData = "C:\\Temp\\"; // 如果未设置 ProgramData，尝试一些后备方案。
                 String prevTmpDir = System.getProperty("java.io.tmpdir", programData);
                 String prevUser = System.getProperty("user.name", "libGDX_User");
                 System.setProperty("java.io.tmpdir", programData + "/libGDX-temp");
@@ -96,12 +89,12 @@ public class StartupHelper {
             return false;
         }
 
-        // There is no need for -XstartOnFirstThread on Graal native image
+        // 在 Graal 原生镜像上不需要 -XstartOnFirstThread
         if (!System.getProperty("org.graalvm.nativeimage.imagecode", "").isEmpty()) {
             return false;
         }
 
-        // Checks if we are already on the main thread, such as from running via Construo.
+        // 检查我们是否已经在主线程上，例如通过 Construo 运行。
         long objc_msgSend = ObjCRuntime.getLibrary().getFunctionAddress("objc_msgSend");
         long NSThread      = objc_getClass("NSThread");
         long currentThread = invokePPP(NSThread, sel_getUid("currentThread"), objc_msgSend);
@@ -110,30 +103,30 @@ public class StartupHelper {
 
         long pid = LibC.getpid();
 
-        // check whether -XstartOnFirstThread is enabled
+        // 检查是否启用了 -XstartOnFirstThread
         if ("1".equals(System.getenv("JAVA_STARTED_ON_FIRST_THREAD_" + pid))) {
             return false;
         }
 
-        // check whether the JVM was previously restarted
-        // avoids looping, but most certainly leads to a crash
+        // 检查 JVM 是否之前已重新启动
+        // 避免循环，但几乎肯定会导致崩溃
         if ("true".equals(System.getProperty(JVM_RESTARTED_ARG))) {
             System.err.println(
-                    "There was a problem evaluating whether the JVM was started with the -XstartOnFirstThread argument.");
+                "评估 JVM 是否以 -XstartOnFirstThread 参数启动时出现问题。");
             return false;
         }
 
-        // Restart the JVM with -XstartOnFirstThread
+        // 使用 -XstartOnFirstThread 重新启动 JVM
         ArrayList<String> jvmArgs = new ArrayList<>();
         String separator = System.getProperty("file.separator", "/");
-        // The following line is used assuming you target Java 8, the minimum for LWJGL3.
+        // 以下行假设您针对 Java 8（LWJGL3 的最低要求）。
         String javaExecPath = System.getProperty("java.home") + separator + "bin" + separator + "java";
-        // If targeting Java 9 or higher, you could use the following instead of the above line:
+        // 如果针对 Java 9 或更高版本，您可以使用以下行代替上面的行：
         //String javaExecPath = ProcessHandle.current().info().command().orElseThrow();
 
         if (!(new File(javaExecPath)).exists()) {
             System.err.println(
-                    "A Java installation could not be found. If you are distributing this app with a bundled JRE, be sure to set the -XstartOnFirstThread argument manually!");
+                "找不到 Java 安装。如果您使用捆绑的 JRE 分发此应用，请确保手动设置 -XstartOnFirstThread 参数！");
             return false;
         }
 
@@ -149,7 +142,7 @@ public class StartupHelper {
             if (trace.length > 0) {
                 mainClass = trace[trace.length - 1].getClassName();
             } else {
-                System.err.println("The main class could not be determined.");
+                System.err.println("无法确定主类。");
                 return false;
             }
         }
@@ -161,9 +154,9 @@ public class StartupHelper {
                 processBuilder.start();
             } else {
                 Process process = (new ProcessBuilder(jvmArgs))
-                        .redirectErrorStream(true).start();
+                    .redirectErrorStream(true).start();
                 BufferedReader processOutput = new BufferedReader(
-                        new InputStreamReader(process.getInputStream()));
+                    new InputStreamReader(process.getInputStream()));
                 String line;
 
                 while ((line = processOutput.readLine()) != null) {
@@ -173,7 +166,7 @@ public class StartupHelper {
                 process.waitFor();
             }
         } catch (Exception e) {
-            System.err.println("There was a problem restarting the JVM");
+            System.err.println("重新启动 JVM 时出现问题");
             e.printStackTrace();
         }
 
@@ -181,22 +174,20 @@ public class StartupHelper {
     }
 
     /**
-     * Starts a new JVM if the application was started on macOS without the
-     * {@code -XstartOnFirstThread} argument. Returns whether a new JVM was
-     * started and thus no code should be executed. Redirects the output of the
-     * new JVM to the old one.
+     * 如果应用程序在 macOS 上启动时没有使用 {@code -XstartOnFirstThread} 参数，
+     * 则启动一个新的 JVM。返回是否启动了新的 JVM，从而指示是否不应在此 JVM 中执行代码。
+     * 将新 JVM 的输出重定向到旧 JVM。
      * <p>
-     * <u>Usage:</u>
+     * <u>用法：</u>
      *
      * <pre>
      * public static void main(String... args) {
-     * 	if (StartupHelper.startNewJvmIfRequired()) return; // This handles macOS support and helps on Windows.
-     * 	// the actual main method code
+     *     if (StartupHelper.startNewJvmIfRequired()) return; // 这处理 macOS 支持并帮助解决 Windows 问题。
+     *     // 实际的主方法代码
      * }
      * </pre>
      *
-     * @return whether a new JVM was started and thus no code should be executed
-     *         in this one
+     * @return 是否启动了新的 JVM，从而指示是否不应在此 JVM 中执行代码
      */
     public static boolean startNewJvmIfRequired() {
         return startNewJvmIfRequired(true);

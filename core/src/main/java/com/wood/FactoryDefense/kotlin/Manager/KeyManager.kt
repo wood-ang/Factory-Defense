@@ -99,9 +99,10 @@ class Processor : InputProcessor {
             Input.Buttons.RIGHT -> mouseRight = true
             Input.Buttons.MIDDLE -> mouseMIDDLE = true
         }
-        uiManager.touchDown(screenX.toFloat(), Gdx.graphics.height - screenY.toFloat())
+        uiManager.touchDown(mouseX, mouseY)
         return true
     }
+
 
     override fun touchUp(screenX: Int, screenY: Int, pointer: Int, button: Int): Boolean {
         when (button) {
@@ -109,6 +110,7 @@ class Processor : InputProcessor {
             Input.Buttons.RIGHT -> mouseRight = false
             Input.Buttons.MIDDLE -> mouseMIDDLE = false
         }
+        uiManager.touchDown(mouseX, mouseY)
         return true
     }
 

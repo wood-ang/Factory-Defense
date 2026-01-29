@@ -1,28 +1,39 @@
 package com.wood.FactoryDefense.kotlin.Manager
 
 import com.badlogic.gdx.graphics.g2d.SpriteBatch
+import com.wood.FactoryDefense.kotlin.UI.Arrangement
 import com.wood.FactoryDefense.kotlin.UI.BasicUIBlock
+import com.wood.FactoryDefense.kotlin.UI.UILayout
+import com.wood.FactoryDefense.kotlin.UI.UIShape
 
-class UIManager {
+class UIManager (
+    val batch: SpriteBatch
+){
+    // 假设有一个具体的UIBlock实现类
+    private val displayWidth = 800f  // 需要根据实际情况设置
+    private val displayHeight = 600f // 需要根据实际情况设置
 
-    public val roots = mutableListOf<BasicUIBlock>()
+    init {
+
+    }
+
+    val roots: BasicUIBlock = object : BasicUIBlock(UIShape(displayWidth, displayHeight), UILayout(Arrangement.Vertical, 1, 0f, 0f)) {
+        override fun render(batch: SpriteBatch) {}
+    }
 
 
     fun addRoot(ui: BasicUIBlock) {
-        roots.add(ui)
+        roots.addUIChild(ui)
     }
 
     fun update() {
-        roots.forEach { it.update() }
+        roots.update()
     }
 
-    fun render(batch: SpriteBatch) {
-        roots.forEach { it.renderAll(batch) }
+    fun render() {
+        roots.renderAll(batch)
     }
 
-    fun touchDown(x: Float, y: Float) {
-        for (ui in roots.reversed()) {
-            ui.handleClick(x, y)
-        }
+    fun touchDown(TouchX: Float, TouchY: Float) {
     }
 }

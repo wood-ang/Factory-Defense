@@ -1,7 +1,6 @@
 package com.wood.FactoryDefense.kotlin.Block
 
-import com.wood.FactoryDefense.Coordinate
-import com.wood.FactoryDefense.kotlin.Block.Chunk
+import com.wood.FactoryDefense.kotlin.Curve.Coordinate
 
 class WorldMap(
     val width: Int,

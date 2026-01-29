@@ -17,7 +17,7 @@ class GameManager : Runnable {
             blockFlasher()
             Key()
 
-            uiManager.roots[0].layout.x = PanelY_ture
+            uiManager.roots.children[0].layout.x = PanelY_ture
 
 
             //***************************************************

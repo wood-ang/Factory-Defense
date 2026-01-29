@@ -1,10 +1,10 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE module PUBLIC "-//Google Inc.//DTD Google Web Toolkit 2.11.0//EN" "https://www.gwtproject.org/doctype/2.11.0/gwt-module.dtd">
 <module>
-  <!-- Paths to source are relative to this file and separated by slashes ('/'). -->
-  <source path="" />
+    <!-- 源文件的路径是相对于此文件的，并由斜杠 ('/') 分隔。 -->
+    <source path="" />
 
-  <!-- Reflection includes may be needed for your code or library code. Each value is separated by periods ('.'). -->
-  <!-- You can include a full package by not including the name of a type at the end. -->
+    <!-- 你的代码或库代码可能需要反射包含。每个值由句点 ('.') 分隔。 -->
+    <!-- 你可以通过不在末尾包含类型名称来包含整个包。 -->
 
 </module>

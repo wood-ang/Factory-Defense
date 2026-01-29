@@ -19,8 +19,8 @@ package com.wood.FactoryDefense.kotlin.UI
  * @property height UI元素的高度，默认50f
  */
 class UIShape(
-    var width: Float = 100f,
-    var height: Float = 50f,
+    var width: Float,
+    var height: Float,
     var transparency: Float = 1f
 ) {
     /**
