@@ -1,5 +1,6 @@
 package com.wood.FactoryDefense.kotlin.UI
 
+import com.badlogic.gdx.graphics.g2d.BitmapFont
 import com.badlogic.gdx.graphics.g2d.SpriteBatch
 
 /**
@@ -44,7 +45,7 @@ class UIButton(
      * font.draw(batch, text, textX, textY)
      * ```
      */
-    override fun render(batch: SpriteBatch) {
+    override fun render(batch: SpriteBatch,font: BitmapFont) {
         // worldX/worldY 是按钮左下角在屏幕上的绝对坐标
         // 此处预留渲染实现，需要添加纹理资源和字体管理
 

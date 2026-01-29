@@ -6,6 +6,7 @@ import com.wood.FactoryDefense.kotlin.Manager.Direction.*
 import kotlin.math.sqrt
 import com.wood.FactoryDefense.kotlin.StaticData.StaticUIData.*
 import com.wood.FactoryDefense.kotlin.StaticData.StaticUIData.uiManager
+import com.wood.FactoryDefense.kotlin.UI.UIText
 
 class GameManager : Runnable {
     override fun run() {
@@ -18,6 +19,9 @@ class GameManager : Runnable {
             Key()
 
             uiManager.roots.children[0].layout.x = PanelY_ture
+
+            uiManager.update()
+            uiManager.roots.children[0].children[0] = UIText(uiManager.roots.children[0].children[0].shape, uiManager.roots.children[0].layout, "${mouseX } ${mouseY}")
 
 
             //***************************************************

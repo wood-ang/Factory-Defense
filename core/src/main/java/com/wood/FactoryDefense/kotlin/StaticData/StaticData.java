@@ -9,7 +9,9 @@ import com.wood.FactoryDefense.kotlin.Block.WorldMap;
 public class StaticData {
     public static long GameManagerFPS = 20;
     public static long CurveLaoderFPS = 60;
-    public static long DrawManagerFPS2 = 0;
+    public static Float CuverSmoothingParameter = 0.2f;
+    public static long UIFlashFPS = 60;
+    public static long DrawManagerFPS2 = 1;
     public static long CurveManagerFPS_true = 0;
 
 
@@ -61,6 +63,11 @@ public class StaticData {
     public static boolean debug = true;
     //************************************************************************//
     public static BasicBlock choose;
+    //************************************************************************//
+    public static final String WARN = "\033[33mWARN\033[0m";
+    public static final String ERROR = "\033[31mERROR\033[0m";
+    public static final String INFO = "\033[32mINFO\033[0m";
+    public static final String DEBUG = "\033[34mDEBUG\033[0m";
 }
 
 

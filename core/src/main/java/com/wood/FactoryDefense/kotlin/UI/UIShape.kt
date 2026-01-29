@@ -1,5 +1,7 @@
 package com.wood.FactoryDefense.kotlin.UI
 
+import com.wood.FactoryDefense.kotlin.StaticData.StaticData.*
+
 
 /**
  * UI形状基类，用于定义UI元素的基本矩形区域
@@ -23,6 +25,9 @@ class UIShape(
     var height: Float,
     var transparency: Float = 1f
 ) {
+    var width_ture: Float = width
+    var height_ture: Float = width
+    var transparency_true: Float = transparency
     /**
      * 检测给定点是否在该UI形状的世界坐标区域内
      *
@@ -41,6 +46,11 @@ class UIShape(
      * val isInside = uiShape.contains(120f, 130f, container.x, container.y)
      * ```
      */
+    fun update() {
+        width_ture += (width - width_ture)*CuverSmoothingParameter
+        height_ture += (height - height_ture)*CuverSmoothingParameter
+        transparency_true += (transparency - transparency_true)*CuverSmoothingParameter
+    }
     fun contains(px: Float, py: Float, layout: UILayout): Boolean {
         return px >= layout.x && px <= layout.x + width &&
             py >= layout.y && py <= layout.y + height

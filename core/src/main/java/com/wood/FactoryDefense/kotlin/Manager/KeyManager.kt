@@ -1,6 +1,5 @@
 package com.wood.FactoryDefense.kotlin.Manager
 
-import com.badlogic.gdx.Gdx
 import com.badlogic.gdx.Input
 import com.badlogic.gdx.Input.Keys.*
 import com.badlogic.gdx.InputProcessor
@@ -44,17 +43,15 @@ class Processor : InputProcessor {
                         NULL()
                     }
                 }
-                print(chooseNumber)
             }
             P -> {
-                print("P")
                 debug = !debug
                 if (debug){
-                    Panely += 300f
-                    debugFontY.data += 300f
+                    uiManager.roots.children[0].shape.transparency = 1f
+                    uiManager.roots.children[0].children[0].shape.transparency = 1f
                 }else{
-                    Panely -= 300f
-                    debugFontY.data -= 300f
+                    uiManager.roots.children[0].shape.transparency = 0f
+                    uiManager.roots.children[0].children[0].shape.transparency = 0f
                 }
             }
             V -> {

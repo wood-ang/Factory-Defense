@@ -16,7 +16,6 @@ class CurveManager : Runnable {
             //***************************************************
             fontX_ture += ((fontX - fontX_ture) * 0.05f)
             fontY_ture += ((fontY - fontY_ture) * 0.05f)
-            PanelY_ture += ((Panely - PanelY_ture) * 0.2f)
             debugFontY.update()
             cameraZoom_ture += ((cameraZoom - cameraZoom_ture) * 0.05f)
             //***************************************************

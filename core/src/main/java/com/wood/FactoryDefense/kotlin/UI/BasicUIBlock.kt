@@ -1,5 +1,6 @@
 package com.wood.FactoryDefense.kotlin.UI
 
+import com.badlogic.gdx.graphics.g2d.BitmapFont
 import com.badlogic.gdx.graphics.g2d.SpriteBatch
 import com.wood.FactoryDefense.kotlin.StaticData.StaticData.*
 
@@ -38,14 +39,16 @@ abstract class BasicUIBlock (
     open fun update() {
         children.forEach { it.update() }
         isHovered = shape.contains(mouseX, mouseY, layout)
+        shape.update()
+        layout.update()
     }
 
-    fun renderAll(batch: SpriteBatch) {
-        children.forEach { it.renderAll(batch) }
-        render(batch)
+    fun renderAll(batch: SpriteBatch,font: BitmapFont) {
+        render(batch, font)
+        children.forEach { it.renderAll(batch, font) }
     }
 
-    protected abstract fun render(batch: SpriteBatch)
+    protected abstract fun render(batch: SpriteBatch,font: BitmapFont)
 
     /* ---------------- 输入 ---------------- */
 
