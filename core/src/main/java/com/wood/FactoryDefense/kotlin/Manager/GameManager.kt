@@ -2,19 +2,21 @@ package com.wood.FactoryDefense.kotlin.Manager
 
 import com.wood.FactoryDefense.kotlin.StaticData.StaticData.*
 import com.wood.FactoryDefense.kotlin.Block.Air
+import com.wood.FactoryDefense.kotlin.Block.BlockFactory
 import com.wood.FactoryDefense.kotlin.Manager.Direction.*
 import kotlin.math.sqrt
 import com.wood.FactoryDefense.kotlin.StaticData.StaticUIData.*
 import com.wood.FactoryDefense.kotlin.StaticData.StaticUIData.uiManager
 import com.wood.FactoryDefense.kotlin.UI.UIText
+import com.wood.FactoryDefense.kotlin.terminal.Log
 
 class GameManager : Runnable {
     override fun run() {
+
         while (true) {
             val StartTime = System.currentTimeMillis()
             Thread.sleep(1000 / GameManagerFPS)
             //***************************************************
-
             blockFlasher()
             Key()
 
@@ -31,60 +33,63 @@ class GameManager : Runnable {
 
     fun blockFlasher(){
 
-        for (i1 in 0 until worldMap!!.size()) {
-            for (i2 in 0 until worldMap!!.getByIndex(i1).size()) {
-                (worldMap!!.chunks[i1]).blocks[i2].flasher()
+        for (x in 0 until worldMap.width) {
+            for (y in 0 until worldMap.height) {
+                worldMap.blocks[x][y].updateSelfAndNeighbors(x, y)
             }
         }
 
-        for (i1 in 0 until worldMap.size()) {
-            for (i2 in 0 until worldMap.getByIndex(i1).size()) {
+        for (x in 0 until worldMap.width) {
+            for (y in 0 until worldMap.height) {
 
-                val x = ((worldMap.indexToCoordinate(i1).x * 16) + worldMap.chunks[i1].indexToCoordinate(i2).x).toFloat() * 32f
-                val y = ((worldMap.indexToCoordinate(i1).y * 16) + worldMap.chunks[i1].indexToCoordinate(i2).y).toFloat() * 32f
-
-                if(mouseX in x..(x + 32f) && mouseY in y..(y + 32f)){
+                if(mouseX in x.toFloat()*32f..(x.toFloat()*32f + 32f) && mouseY in y.toFloat()*32f..(y.toFloat()*32 + 32f)){
                     if (mouseRight){
-                        worldMap.chunks[i1].blocks[i2] = Air()
+                        worldMap.blocks[x][y].beforeBroke(x, y)
+                        worldMap.blocks[x][y] = Air()
+                        worldMap.blocks[x][y].afterBreak(x, y)
                     }
                     if (mouseLeft){
-                        if (choose.name != "NULL") {
-                            worldMap.chunks[i1].blocks[i2] = choose
+                        terminal.logs.add(Log(INFO,"You choose ${choose.name}!"))
+                        if (choose.ID != -1) {
+                            worldMap.blocks[x][y].beforeBuild(x, y)
+                            worldMap.blocks[x][y] = BlockFactory.createBlockById(choose.ID)
+                            worldMap.blocks[x][y].afterBuild(x, y)
                         }
                     }
                 }
+                worldMap.blocks[x][y].updateSelfAndNeighbors(x, y)
             }
         }
     }
 
 
 
-    var direction: Direction = D
+    var direction: Direction = Right
 
     fun Key(){
         if ((KeyW && !KeyS)&&(!KeyA && !KeyD)){
-            direction = W
+            direction = Top
         }
         if ((!KeyW && KeyS)&&(!KeyA && !KeyD)){
-            direction = S
+            direction = Bottom
         }
         if ((!KeyW && !KeyS)&&(KeyA && !KeyD)){
-            direction = A
+            direction = Left
         }
         if ((!KeyW && !KeyS)&&(!KeyA && KeyD)){
-            direction = D
+            direction = Right
         }
         if ((KeyW && !KeyS)&&(!KeyA && KeyD)){
-            direction = WD
+            direction = TopRight
         }
         if ((!KeyW && KeyS)&&(!KeyA && KeyD)){
-            direction = DS
+            direction = BottomRight
         }
         if ((!KeyW && KeyS)&&(KeyA && !KeyD)){
-            direction = SA
+            direction = BottomLeft
         }
         if ((KeyW && !KeyS)&&(KeyA && !KeyD)){
-            direction = AW
+            direction = TopLeft
         }
         if ((!KeyW && !KeyS)&&(!KeyA && !KeyD)){
             return
@@ -93,31 +98,31 @@ class GameManager : Runnable {
     }
     fun Manager(){
         when(direction){
-            W -> {
+            Top -> {
                 fontY += 25f
             }
-            WD -> {
+            TopRight -> {
                 fontY += sqrt(((25*25)/2).toDouble()).toFloat()
                 fontX += sqrt(((25*25)/2).toDouble()).toFloat()
             }
-            D -> {
+            Right -> {
                 fontX += 25f
             }
-            DS -> {
+            BottomRight -> {
                 fontY -= sqrt(((25*25)/2).toDouble()).toFloat()
                 fontX += sqrt(((25*25)/2).toDouble()).toFloat()
             }
-            S -> {
+            Bottom -> {
                 fontY -= 25f
             }
-            SA -> {
+            BottomLeft -> {
                 fontX -= sqrt(((25*25)/2).toDouble()).toFloat()
                 fontY -= sqrt(((25*25)/2).toDouble()).toFloat()
             }
-            A -> {
+            Left -> {
                 fontX -= 25f
             }
-            AW -> {
+            TopLeft -> {
                 fontY += sqrt(((25*25)/2).toDouble()).toFloat()
                 fontX -= sqrt(((25*25)/2).toDouble()).toFloat()
             }
@@ -132,14 +137,14 @@ class GameManager : Runnable {
 }
 
 enum class Direction{
-    W,
-    WD,
-    D,
-    DS,
-    S,
-    SA,
-    A,
-    AW
+    Top,
+    TopRight,
+    Right,
+    BottomRight,
+    Bottom,
+    BottomLeft,
+    Left,
+    TopLeft
 }
 
 

@@ -3,8 +3,8 @@ package com.wood.FactoryDefense.kotlin.terminal;
 public class Log {
     String message;
     String Type;
-    public Log(String message, String Type) {
-        this.message = message;
+    public Log(String Type,Object message) {
+        this.message = message.toString();
         this.Type = Type;
     }
     public void debugOutput(){

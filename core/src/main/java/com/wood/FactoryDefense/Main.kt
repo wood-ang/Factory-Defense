@@ -14,6 +14,7 @@ import com.badlogic.gdx.graphics.g2d.TextureRegion  // 纹理区域，用于截�
 import com.badlogic.gdx.math.Matrix4  // 4x4矩阵，用于坐标变换
 import com.badlogic.gdx.math.Vector3  // 三维向量，用于坐标表示
 import com.badlogic.gdx.utils.ScreenUtils  // 屏幕工具类，提供清屏等功能
+import com.wood.FactoryDefense.kotlin.Block.BlockFactory.createBlockById
 
 // 导入游戏自定义类
 import com.wood.FactoryDefense.kotlin.StaticData.StaticData.*  // 静态数据，包含游戏全局变量
@@ -46,7 +47,7 @@ class Main : ApplicationAdapter() {
     lateinit var hovered: Texture            // 鼠标悬停时显示的纹理
     lateinit var font: BitmapFont            // 字体，用于绘制文字
     lateinit var cameraCenter: Texture       // 相机中心点纹理（可能用于调试）
-    lateinit var terminal: Terminal
+
 
     // --- 输入处理 ---
     private val inputProcessor: Processor = Processor()  // 自定义输入处理器
@@ -86,10 +87,24 @@ class Main : ApplicationAdapter() {
 
         // 加载纹理资源
         image = Texture("libgdx.png")  // LibGDX Logo纹理
-        cameraCenter = Texture("BaseBuild.png")  // 基础建筑纹理
+        cameraCenter = Texture("BasicBuild.png")  // 基础建筑纹理
         textureAir = createTransparentTexture(32, 32,0f,0f,0f,0f)  // 创建透明纹理（空气方块）
-        textureBaseBlock = Texture("BaseBuild.png")  // 基础方块纹理
+        textureBaseBlock = Texture("BasicBuild.png")  // 基础方块纹理
         textureStone = Texture("Stone.png")  // 石头纹理
+            textureBaseBuildFrame = Texture("BasicBuildFrame.png")
+            textureBaseBuildFrame_B = Texture("frame_B.png")
+            textureBaseBuildFrame_BL = Texture("frame_BL.png")
+            textureBaseBuildFrame_BR = Texture("frame_BR.png")
+            textureBaseBuildFrame_L = Texture("frame_L.png")
+            textureBaseBuildFrame_R = Texture("frame_R.png")
+            textureBaseBuildFrame_T = Texture("frame_T.png")
+            textureBaseBuildFrame_TL = Texture("frame_TL.png")
+            textureBaseBuildFrame_TR = Texture("frame_TR.png")
+
+            textureStoneFrame_T = Texture("StoneFrame_T.png")
+            textureStoneFrame_B = Texture("StoneFrame_B.png")
+            textureStoneFrame_R = Texture("StoneFrame_R.png")
+            textureStoneFrame_L = Texture("StoneFrame_L.png")
         textureUIPanle = Texture("UIPanel.png")  // UI面板背景纹理
         textureRegion = TextureRegion(textureUIPanle)  // 创建纹理区域
         ninePatch = NinePatch(textureRegion)  // 创建九宫格（用于UI拉伸）
@@ -118,7 +133,7 @@ class Main : ApplicationAdapter() {
         choose = NULL()  // 初始化当前选择的方块为空
         Gdx.input.setInputProcessor(inputProcessor)  // 设置输入处理器
         terminal = Terminal()
-        terminal.logs.add(Log("Log1", WARN))
+        terminal.logs.add(Log(WARN,"Log1" ))
     }
 
     /**
@@ -171,8 +186,8 @@ class Main : ApplicationAdapter() {
     }
 
     // 记录上次悬停的方块位置（用于动画效果）
-    var lastHovered1 = 0  // 区块索引
-    var lastHovered2 = 0  // 方块在区块内的索引
+    var lastHoveredX = 0  // 区块索引
+    var lastHoveredY = 0  // 方块在区块内的索引
 
     /**
      * render() - LibGDX生命周期方法，每一帧调用
@@ -219,7 +234,7 @@ class Main : ApplicationAdapter() {
         // 结束绘制批次（与begin()配对使用）
         batchDraw.end()
 
-        terminal.output()
+//        terminal.output()
     }
 
     /**
@@ -228,26 +243,20 @@ class Main : ApplicationAdapter() {
      */
     private fun drawTexture() {
         // 遍历所有区块
-        for (i1 in 0 until worldMap.size()) {
+        for (x in 0 until worldMap.width) {
             // 遍历当前区块内的所有方块
-            for (i2 in 0 until worldMap.getByIndex(i1).size()) {
+            for (y in 0 until worldMap.width) {
                 // 计算方块在世界坐标系中的坐标
                 // 公式：世界坐标 = (区块坐标 * 16 + 区块内坐标) * 32
                 // 32是一个方块的像素大小
-                val x = ((worldMap.indexToCoordinate(i1).x * 16) +
-                    worldMap.chunks[i1].indexToCoordinate(i2).x).toFloat() * 32f
-                val y = ((worldMap.indexToCoordinate(i1).y * 16) +
-                    worldMap.chunks[i1].indexToCoordinate(i2).y).toFloat() * 32f
-
                 // 绘制方块的纹理
-                batchDraw.draw(worldMap.chunks[i1].blocks[i2].texture, x, y)
-
+                worldMap.blocks[x][y].render(x*32f, y*32f, batchDraw)
                 // 判断鼠标是否悬停在此方块上
                 // 通过检查鼠标坐标是否在方块区域内
-                if (mouseX in x..(x + 32f) && mouseY in y..(y + 32f)) {
-                    worldMap.chunks[i1].blocks[i2].isHovered = true  // 标记为悬停
+                if (mouseX in x.toFloat()*32f..(x.toFloat()*32f + 32f) && mouseY in y.toFloat()*32f..(y.toFloat()*32 + 32f)) {
+                    worldMap.blocks[x][y].isHovered = true  // 标记为悬停
                 } else {
-                    worldMap.chunks[i1].blocks[i2].isHovered = false // 清除悬停标记
+                    worldMap.blocks[x][y].isHovered = false // 清除悬停标记
                 }
             }
         }
@@ -259,36 +268,34 @@ class Main : ApplicationAdapter() {
      */
     private fun drawHovered() {
         // 遍历所有区块和方块
-        for (i1 in 0 until worldMap.size()) {
-            for (i2 in 0 until worldMap.getByIndex(i1).size()) {
-                // 计算方块坐标（与drawTexture()中相同）
-                val x = ((worldMap.indexToCoordinate(i1).x * 16) +
-                    worldMap.chunks[i1].indexToCoordinate(i2).x).toFloat() * 32f
-                val y = ((worldMap.indexToCoordinate(i1).y * 16) +
-                    worldMap.chunks[i1].indexToCoordinate(i2).y).toFloat() * 32f
-
+        for (x in 0 until worldMap.width) {
+            for (y in 0 until worldMap.width) {
                 // 如果方块被悬停
-                if (worldMap.chunks[i1].blocks[i2].isHovered) {
+                if (worldMap.blocks[x][y].isHovered) {
                     // 启动或更新曲线动画
-                    Thread(curve).start()  // 每次悬停都启动新线程（可能性能问题）
+                    Thread(curve).start()  // 每次悬停都启动新线程
 
                     // 如果悬停的方块发生了变化（不是同一个方块）
-                    if (!(lastHovered1 == i1 && lastHovered2 == i2)) {
+                    if (!(lastHoveredX == x && lastHoveredY == y)) {
                         curve.reStart()  // 重新开始动画
                     }
-
-                    // 设置透明度：根据曲线动画的值计算（1-100映射到0.01-1.0）
-                    batchDraw.setColor(1f, 1f, 1f, ((curve.tureValue) / 100).toFloat())
 
                     // 如果没有选择任何方块，绘制悬停高亮
                     if (choose.name == "NULL") {
                         batchDraw.setColor(1f, 1f, 1f, ((curve.tureValue) / 150).toFloat())
-                        batchDraw.draw(createTransparentTexture(32, 32,1f,1f,1f,1f), x, y)
+                        batchDraw.draw(createTransparentTexture(32, 32,1f,1f,1f,1f), x.toFloat()*32f, y.toFloat()*32f)
                         batchDraw.setColor(1f, 1f, 1f, 1f)  // 恢复不透明度
                     } else {
                         // 如果有选择的方块，绘制该方块的预览（半透明）
-                        batchDraw.setColor(1f, 1f, 1f, ((curve.tureValue) / 200).toFloat())
-                        batchDraw.draw(choose.texture, x, y)
+                        batchDraw.setColor(1f, 1f, 1f, ((curve.tureValue) / 100).toFloat())
+
+                        val imagineBlock = createBlockById(choose.ID)
+
+                        imagineBlock.updateSelfAndNeighbors(x, y)
+
+                        imagineBlock.render(x.toFloat()*32f, y.toFloat()*32f, batchDraw)
+                        batchDraw.setColor(1f, 1f, 1f, ((curve.tureValue) / 250).toFloat())
+                        batchDraw.draw(createTransparentTexture(32, 32,1f,1f,1f,1f), x.toFloat()*32f, y.toFloat()*32f)
                         batchDraw.setColor(1f, 1f, 1f, 1f)  // 恢复不透明度
                     }
 
@@ -297,14 +304,14 @@ class Main : ApplicationAdapter() {
                 }
 
                 // 绘制悬停方块的名字（在鼠标位置显示）
-                if (mouseX in x..(x + 32f) && mouseY in y..(y + 32f)) {
-                    font.draw(batchDraw, worldMap.chunks[i1].blocks[i2].name, mouseX, mouseY)
+                if (mouseX in x.toFloat()*32f..(x.toFloat()*32f + 32f) && mouseY in y.toFloat()*32f..(y.toFloat()*32 + 32f)) {
+                    font.draw(batchDraw, worldMap.blocks[x][y].toString(), mouseX, mouseY)
                 }
 
                 // 记录当前悬停的方块位置（用于下次判断是否变化）
-                if (mouseX in x..(x + 32f) && mouseY in y..(y + 32f)) {
-                    lastHovered1 = i1
-                    lastHovered2 = i2
+                if (mouseX in x.toFloat()*32f..(x.toFloat()*32f + 32f) && mouseY in y.toFloat()*32f..(y.toFloat()*32 + 32f)) {
+                    lastHoveredX = x
+                    lastHoveredY = y
                 }
             }
         }

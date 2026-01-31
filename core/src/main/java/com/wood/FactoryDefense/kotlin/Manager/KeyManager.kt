@@ -29,9 +29,6 @@ class Processor : InputProcessor {
             Q -> {
                 KeyQ = true
             }
-            LEFT ->{
-                mouseLeft = true
-            }
             TAB -> {
                 chooseNumber += 1
                 if (!(chooseNumber < 3))chooseNumber = 0
@@ -78,9 +75,6 @@ class Processor : InputProcessor {
             }
             Q -> {
                 KeyQ = false
-            }
-            LEFT -> {
-                mouseLeft = false
             }
         }
         return true

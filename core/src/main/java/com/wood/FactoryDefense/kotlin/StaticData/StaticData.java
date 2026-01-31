@@ -5,19 +5,20 @@ import com.badlogic.gdx.graphics.g2d.NinePatch;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.wood.FactoryDefense.kotlin.Block.BasicBlock;
 import com.wood.FactoryDefense.kotlin.Block.WorldMap;
+import com.wood.FactoryDefense.kotlin.terminal.Terminal;
 
 public class StaticData {
     public static long GameManagerFPS = 20;
     public static long CurveLaoderFPS = 60;
-    public static Float CuverSmoothingParameter = 0.2f;
+    public static float CuverSmoothingParameter = 0.2f;
     public static long UIFlashFPS = 60;
     public static long DrawManagerFPS2 = 1;
     public static long CurveManagerFPS_true = 0;
 
 
     //************************************************************************//
-    public static Float fontX;
-    public static Float fontY;
+    public static float fontX;
+    public static float fontY;
 
     public static float fontX_ture;
     public static float fontY_ture;
@@ -58,9 +59,27 @@ public class StaticData {
     public static Texture textureUIPanle;
         public static TextureRegion textureRegion;
         public static NinePatch ninePatch;
+    public static Texture textureBaseBuildFrame;
+    public static Texture textureBaseBuildFrame_B;
+    public static Texture textureBaseBuildFrame_BL;
+    public static Texture textureBaseBuildFrame_BR;
+    public static Texture textureBaseBuildFrame_L;
+    public static Texture textureBaseBuildFrame_R;
+    public static Texture textureBaseBuildFrame_T;
+    public static Texture textureBaseBuildFrame_TL;
+    public static Texture textureBaseBuildFrame_TR;
 
+    public static Texture textureStoneFrame_B;
+    public static Texture textureStoneFrame_BL;
+    public static Texture textureStoneFrame_BR;
+    public static Texture textureStoneFrame_L;
+    public static Texture textureStoneFrame_R;
+    public static Texture textureStoneFrame_T;
+    public static Texture textureStoneFrame_TL;
+    public static Texture textureStoneFrame_TR;
     //************************************************************************//
     public static boolean debug = true;
+    public static Terminal terminal;
     //************************************************************************//
     public static BasicBlock choose;
     //************************************************************************//
