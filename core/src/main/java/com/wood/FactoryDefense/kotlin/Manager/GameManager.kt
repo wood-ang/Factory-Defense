@@ -1,36 +1,36 @@
 package com.wood.FactoryDefense.kotlin.Manager
 
-import com.wood.FactoryDefense.kotlin.StaticData.StaticData.*
+import com.wood.FactoryDefense.kotlin.StaticData.Data.*
 import com.wood.FactoryDefense.kotlin.Block.Air
 import com.wood.FactoryDefense.kotlin.Block.BlockFactory
-import com.wood.FactoryDefense.kotlin.Curve.Coordinate
 import com.wood.FactoryDefense.kotlin.Item.BasicItem
 import com.wood.FactoryDefense.kotlin.Item.Bundle
+import com.wood.FactoryDefense.kotlin.Item.ItemLayout
 import com.wood.FactoryDefense.kotlin.Manager.Direction.*
 import kotlin.math.sqrt
-import com.wood.FactoryDefense.kotlin.StaticData.StaticUIData.*
-import com.wood.FactoryDefense.kotlin.StaticData.StaticUIData.uiManager
-import com.wood.FactoryDefense.kotlin.UI.UIText
+import com.wood.FactoryDefense.kotlin.StaticData.UIData.*
+import com.wood.FactoryDefense.kotlin.StaticData.UIData.uiManager
+import com.wood.FactoryDefense.kotlin.UI.Text
 import com.wood.FactoryDefense.kotlin.terminal.Log
 
 class GameManager : Runnable {
     override fun run() {
 
         while (true) {
-            val StartTime = System.currentTimeMillis()
+            val startTime = System.currentTimeMillis()
             Thread.sleep(1000 / GameManagerFPS)
             //***************************************************
             blockFlasher()
-            Key()
+            key()
 
             uiManager.roots.children[0].layout.x = PanelY_ture
 
             uiManager.update()
-            uiManager.roots.children[0].children[0] = UIText(uiManager.roots.children[0].children[0].shape, uiManager.roots.children[0].layout, "${mouseX } ${mouseY}")
+            uiManager.roots.children[0].children[0] = Text(uiManager.roots.children[0].children[0].shape, uiManager.roots.children[0].layout, "$mouseX $mouseY")
 
 
             //***************************************************
-            GameManagerFPS_true = (1000 / (System.currentTimeMillis() - StartTime))
+            GameManagerFPS_true = (1000 / (System.currentTimeMillis() - startTime))
         }
     }
 
@@ -57,7 +57,9 @@ class GameManager : Runnable {
                         choose = worldMap.blocks[x][y]
                     }
                     if(KeyQ){
-                        worldMap.items[Coordinate((mouseX).toDouble(),(mouseY).toDouble())] = Bundle(BasicItem())
+                        if (!(itemLayout.x < mouseX && itemLayout.x + 16f > mouseX && itemLayout.y < mouseY && itemLayout.y + 16f > mouseY)) {
+                            worldMap.items.add(Bundle(BasicItem(),ItemLayout(x = mouseX-8f, y = mouseY-8f, angle = 0)))
+                        }
                     }
                 }
             }
@@ -68,7 +70,7 @@ class GameManager : Runnable {
 
     var direction: Direction = Right
 
-    fun Key(){
+    fun key(){
         if ((KeyW && !KeyS)&&(!KeyA && !KeyD)){
             direction = Top
         }
@@ -96,9 +98,9 @@ class GameManager : Runnable {
         if ((!KeyW && !KeyS)&&(!KeyA && !KeyD)){
             return
         }
-        Manager()
+        manager()
     }
-    fun Manager(){
+    fun manager(){
         when(direction){
             Top -> {
                 fontY += 25f

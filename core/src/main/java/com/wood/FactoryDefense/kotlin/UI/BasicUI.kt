@@ -1,4 +1,4 @@
 package com.wood.FactoryDefense.kotlin.UI
 
-abstract class BasicUI(shape: UIShape, layout: UILayout) : BasicUIBlock(shape, layout) {
+abstract class BasicUI(shape: Shape, layout: UILayout) : BasicUIBlock(shape, layout) {
 }

@@ -2,10 +2,10 @@ package com.wood.FactoryDefense.kotlin.UI
 
 import com.badlogic.gdx.graphics.g2d.BitmapFont
 import com.badlogic.gdx.graphics.g2d.SpriteBatch
-import com.wood.FactoryDefense.kotlin.StaticData.StaticData.*
+import com.wood.FactoryDefense.kotlin.StaticData.Data.*
 
 abstract class BasicUIBlock (
-    var shape: UIShape,
+    var shape: Shape,
     var layout: UILayout,){
 
     var isHovered: Boolean = false

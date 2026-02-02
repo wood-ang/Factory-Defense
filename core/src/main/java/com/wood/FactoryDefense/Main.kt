@@ -11,26 +11,29 @@ import com.badlogic.gdx.graphics.g2d.BitmapFont  // 位图字体类
 import com.badlogic.gdx.graphics.g2d.NinePatch  // 九宫格纹理，用于UI拉伸
 import com.badlogic.gdx.graphics.g2d.SpriteBatch  // 精灵批处理器，用于高效绘制
 import com.badlogic.gdx.graphics.g2d.TextureRegion  // 纹理区域，用于截取纹理的一部分
-import com.badlogic.gdx.math.Matrix4  // 4x4矩阵，用于坐标变换
 import com.badlogic.gdx.math.Vector3  // 三维向量，用于坐标表示
 import com.badlogic.gdx.utils.ScreenUtils  // 屏幕工具类，提供清屏等功能
 import com.wood.FactoryDefense.kotlin.Block.Air
-import com.wood.FactoryDefense.kotlin.Block.BlockFactory.createBlockById
 
 // 导入游戏自定义类
-import com.wood.FactoryDefense.kotlin.StaticData.StaticData.*  // 静态数据，包含游戏全局变量
+import com.wood.FactoryDefense.kotlin.StaticData.Data.*  // 静态数据，包含游戏全局变量
 import com.wood.FactoryDefense.kotlin.Block.WorldMap  // 世界地图类
 import com.wood.FactoryDefense.kotlin.Curve.ThreadCurve  // 曲线动画线程类
+import com.wood.FactoryDefense.kotlin.DrawFunction.drawDebugText
+import com.wood.FactoryDefense.kotlin.DrawFunction.whenHovered
+import com.wood.FactoryDefense.kotlin.DrawFunction.drawBlocks
+import com.wood.FactoryDefense.kotlin.DrawFunction.drawItems
+import com.wood.FactoryDefense.kotlin.Item.ItemLayout
 import com.wood.FactoryDefense.kotlin.Manager.CurveManager  // 曲线管理器
 import com.wood.FactoryDefense.kotlin.Manager.GameManager  // 游戏管理器
 import com.wood.FactoryDefense.kotlin.Manager.Processor  // 输入处理器
 import com.wood.FactoryDefense.kotlin.Manager.UIManager  // UI管理器
-import com.wood.FactoryDefense.kotlin.StaticData.StaticUIData.*  // 静态UI数据
+import com.wood.FactoryDefense.kotlin.StaticData.UIData.*  // 静态UI数据
 import com.wood.FactoryDefense.kotlin.UI.Arrangement  // UI排列方式枚举
 import com.wood.FactoryDefense.kotlin.UI.UILayout  // UI布局类
-import com.wood.FactoryDefense.kotlin.UI.UIPanel  // UI面板类
-import com.wood.FactoryDefense.kotlin.UI.UIShape  // UI形状类
-import com.wood.FactoryDefense.kotlin.UI.UIText
+import com.wood.FactoryDefense.kotlin.UI.Panel  // UI面板类
+import com.wood.FactoryDefense.kotlin.UI.Shape  // UI形状类
+import com.wood.FactoryDefense.kotlin.UI.Text
 import com.wood.FactoryDefense.kotlin.terminal.Log
 import com.wood.FactoryDefense.kotlin.terminal.Terminal
 
@@ -40,24 +43,37 @@ import com.wood.FactoryDefense.kotlin.terminal.Terminal
  */
 class Main : ApplicationAdapter() {
 
+    companion object{
+
+        var lastHoveredX = 0  // 区块索引
+        var lastHoveredY = 0  // 方块在区块内的索引
+        var isItemHovered: Boolean = false
+        var isBlockHovered: Boolean = false
+        // --- 动画效果 ---
+        val curveBlockHovered = ThreadCurve(3000, 1.0, 100.0, 0.2, 20)  // 曲线动画线程，用于悬停效果
+        val curveItemHovered  = ThreadCurve(3000, 1.0, 100.0, 0.2, 20)  // 曲线动画线程，用于悬停效果
+
+        var indexOut: Int = 0
+
+        // 参数说明：持续时间3000ms，起始值1.0，结束值100.0，初始速度0.2，加速度20
+        var lastHoveredItem = ItemLayout(0f, 0f)
+    }
+
     // --- 图形渲染相关变量 ---
     lateinit var camera: OrthographicCamera  // 2D相机，控制视图
     lateinit var batchDraw: SpriteBatch      // 精灵批处理器，用于绘制所有图形
     lateinit var image: Texture              // 测试用的纹理（可能已弃用）
     lateinit var hovered: Texture            // 鼠标悬停时显示的纹理
-    lateinit var font: BitmapFont            // 字体，用于绘制文字
     lateinit var cameraCenter: Texture       // 相机中心点纹理（可能用于调试）
 
 
     // --- 输入处理 ---
     private val inputProcessor: Processor = Processor()  // 自定义输入处理器
 
-    // --- 动画效果 ---
-    val curve = ThreadCurve(3000, 1.0, 100.0, 0.1, 20)  // 曲线动画线程，用于悬停效果
-    // 参数说明：持续时间3000ms，起始值1.0，结束值100.0，初始速度0.2，加速度20
 
     // --- 鼠标位置 ---
     lateinit var mouse: Vector3  // 存储鼠标在世界坐标系中的位置
+
 
     /**
      * create() - LibGDX生命周期方法，游戏初始化时调用
@@ -65,7 +81,7 @@ class Main : ApplicationAdapter() {
      */
     override fun create() {
         // 初始化游戏所有组件
-        initialization()
+        init()
 
         // 创建用户界面
         createUI()
@@ -86,7 +102,7 @@ class Main : ApplicationAdapter() {
      * initialization() - 初始化游戏核心资源
      * 私有方法，用于组织初始化代码
      */
-    private fun initialization() {
+    private fun init() {
         // --- 初始化核心资源 ---
 
         // 创建正交相机，视口大小设置为屏幕大小
@@ -152,6 +168,8 @@ class Main : ApplicationAdapter() {
     private fun createThreads() {
         Thread(GameManager()).start()  // 启动游戏管理线程
         Thread(CurveManager()).start()  // 启动曲线管理线程
+        Thread(curveItemHovered).start()
+        Thread(curveBlockHovered).start()
     }
 
     /**
@@ -163,12 +181,12 @@ class Main : ApplicationAdapter() {
         uiManager = UIManager(batchDraw,font)
 
         // 创建一个面板：大小为400x300，垂直排列，内边距1，位置(8,8)
-        val panel = UIPanel(
-            UIShape(400f, 300f),  // 面板形状
+        val panel = Panel(
+            Shape(400f, 300f),  // 面板形状
             UILayout(Arrangement.Vertical, 1, x = 8f, y = 8f)  // 布局设置
         )
-        val text = UIText(
-            UIShape(400f, 50f),
+        val text = Text(
+            Shape(400f, 50f),
             UILayout(Arrangement.Vertical, 1, x = 8f, y = 24f),
             "$mouseX $mouseY"
         )
@@ -194,15 +212,32 @@ class Main : ApplicationAdapter() {
         displayHeight = height.toFloat()
     }
 
-    // 记录上次悬停的方块位置（用于动画效果）
-    var lastHoveredX = 0  // 区块索引
-    var lastHoveredY = 0  // 方块在区块内的索引
-
     /**
      * render() - LibGDX生命周期方法，每一帧调用
      * 游戏的主循环，负责绘制和更新游戏状态
      */
     override fun render() {
+
+        renderInit()
+
+        // 开始绘制批次
+        batchDraw.begin()
+
+        // --- 绘制游戏世界 ---
+        drawBlocks(batchDraw)     // 绘制所有方块
+        drawItems(batchDraw) // 绘制掉落物
+        whenHovered(batchDraw)     // 绘制悬停效果
+        drawDebugText(batchDraw)   // 绘制调试信息
+
+        // 结束绘制批次
+        batchDraw.end()
+
+        Thread.sleep(1000/DrawManagerFPS)
+
+    }
+
+    fun renderInit(){
+
         // --- 更新相机 ---
         // 设置相机缩放（使用平滑后的值，避免抖动）
         camera.zoom = cameraZoom_ture
@@ -220,8 +255,6 @@ class Main : ApplicationAdapter() {
         // 重置绘制颜色为不透明白色（避免之前的透明度设置影响）
         batchDraw.setColor(1f, 1f, 1f, 1f)
 
-        // 开始绘制批次（LibGDX要求绘制前必须调用begin()）
-        batchDraw.begin()
 
         // 根据相机缩放调整字体大小（缩放越大，字体越小）
         font.data.setScale(cameraZoom_ture * 2f)
@@ -235,135 +268,8 @@ class Main : ApplicationAdapter() {
         mouseX = mouse.x
         mouseY = mouse.y
 
-        // --- 绘制游戏世界 ---
-        drawTextureBlock()     // 绘制所有方块
-        drawTextureItem() // 绘制方块边框
-        drawHovered()     // 绘制悬停效果
-        drawDebugText()   // 绘制调试信息
-
-        // 结束绘制批次（与begin()配对使用）
-        batchDraw.end()
-
-//        terminal.output()
     }
 
-    /**
-     * drawTexture() - 绘制世界中的所有方块
-     * 私有方法，遍历并绘制每个方块
-     */
-    private fun drawTextureBlock() {
-        // 遍历所有区块
-        for (x in 0 until worldMap.width) {
-            // 遍历当前区块内的所有方块
-            for (y in 0 until worldMap.width) {
-                // 计算方块在世界坐标系中的坐标
-                // 公式：世界坐标 = (区块坐标 * 16 + 区块内坐标) * 32
-                // 32是一个方块的像素大小
-                // 绘制方块的纹理
-                worldMap.blocks[x][y].render(x*32f, y*32f, batchDraw)
-                // 判断鼠标是否悬停在此方块上
-                // 通过检查鼠标坐标是否在方块区域内
-                if (mouseX in x.toFloat()*32f..(x.toFloat()*32f + 32f) && mouseY in y.toFloat()*32f..(y.toFloat()*32 + 32f)) {
-                    worldMap.blocks[x][y].isHovered = true  // 标记为悬停
-                } else {
-                    worldMap.blocks[x][y].isHovered = false // 清除悬停标记
-                }
-            }
-        }
-    }
-
-    private fun drawTextureItem() {
-        worldMap.items.forEach { (coordinate, bundle) ->
-            bundle.item.render(coordinate.x.toFloat(), coordinate.y.toFloat(), batchDraw)
-        }
-    }
-
-    /**
-     * drawHovered() - 绘制方块悬停效果
-     * 私有方法，为悬停的方块添加高亮或预览效果
-     */
-    private fun drawHovered() {
-        // 遍历所有区块和方块
-        for (x in 0 until worldMap.width) {
-            for (y in 0 until worldMap.width) {
-                // 如果方块被悬停
-                if (worldMap.blocks[x][y].isHovered) {
-                    // 启动或更新曲线动画
-                    Thread(curve).start()  // 每次悬停都启动新线程
-
-                    // 如果悬停的方块发生了变化（不是同一个方块）
-                    if (!(lastHoveredX == x && lastHoveredY == y)) {
-                        curve.reStart()  // 重新开始动画
-                    }
-
-                    // 如果没有选择任何方块，绘制悬停高亮
-                    if (choose.name == "NULL") {
-                        batchDraw.setColor(1f, 1f, 1f, ((curve.tureValue) / 150).toFloat())
-                        batchDraw.draw(createTransparentTexture(32, 32,1f,1f,1f,1f), x.toFloat()*32f, y.toFloat()*32f)
-                        batchDraw.setColor(1f, 1f, 1f, 1f)  // 恢复不透明度
-                    } else {
-                        // 如果有选择的方块，绘制该方块的预览（半透明）
-                        batchDraw.setColor(1f, 1f, 1f, ((curve.tureValue) / 100).toFloat())
-
-                        val imagineBlock = createBlockById(choose.ID)
-
-                        imagineBlock.updateSelfAndNeighbors(x, y)
-
-                        imagineBlock.render(x.toFloat()*32f, y.toFloat()*32f, batchDraw)
-                        batchDraw.setColor(1f, 1f, 1f, ((curve.tureValue) / 250).toFloat())
-                        batchDraw.draw(createTransparentTexture(32, 32,1f,1f,1f,1f), x.toFloat()*32f, y.toFloat()*32f)
-                        batchDraw.setColor(1f, 1f, 1f, 1f)  // 恢复不透明度
-                    }
-
-                    // 恢复绘制颜色
-                    batchDraw.setColor(1f, 1f, 1f, 1f)
-                }
-
-                // 绘制悬停方块的名字（在鼠标位置显示）
-                if (mouseX in x.toFloat()*32f..(x.toFloat()*32f + 32f) && mouseY in y.toFloat()*32f..(y.toFloat()*32 + 32f)) {
-                    font.draw(batchDraw, worldMap.blocks[x][y].toString(), mouseX, mouseY)
-                }
-
-                // 记录当前悬停的方块位置（用于下次判断是否变化）
-                if (mouseX in x.toFloat()*32f..(x.toFloat()*32f + 32f) && mouseY in y.toFloat()*32f..(y.toFloat()*32 + 32f)) {
-                    lastHoveredX = x
-                    lastHoveredY = y
-                }
-            }
-        }
-    }
-
-    /**
-     * drawDebugText() - 绘制调试信息
-     * 私有方法，显示FPS、鼠标位置等调试信息
-     */
-    private fun drawDebugText() {
-        // 如果调试模式开启，显示FPS信息
-        if (debug) {
-            font.draw(
-                batchDraw,
-                "[GameManagerFPS] ${GameManager.GameManagerFPS_true}\n" +  // 游戏管理器FPS
-                    "[CurveManagerFPS] ${CurveManagerFPS_true}",  // 曲线管理器FPS
-                fontX_ture,  // 位置：相机中心X
-                fontY_ture   // 位置：相机中心Y
-            )
-        }
-
-        // 切换到屏幕坐标系（用于绘制UI和调试信息）
-        // 创建一个正交2D矩阵，原点在左下角
-        batchDraw.projectionMatrix = Matrix4().setToOrtho2D(
-            0f,
-            0f,
-            Gdx.graphics.width.toFloat(),  // 屏幕宽度
-            Gdx.graphics.height.toFloat()  // 屏幕高度
-        )
-
-        // 恢复字体大小为原始大小（不受相机缩放影响）
-        font.data.setScale(1f)
-
-        // 绘制UI（UI管理器会处理所有UI元素的绘制）
-        uiManager.render()
-    }
 
     /**
      * dispose() - LibGDX生命周期方法，游戏退出时调用
@@ -380,7 +286,7 @@ class Main : ApplicationAdapter() {
     }
 }
 
-private fun createTransparentTexture(width: Int, height: Int, r: Float,g: Float,b: Float,a: Float): Texture {
+fun createTransparentTexture(width: Int, height: Int, r: Float,g: Float,b: Float,a: Float): Texture {
         // 如果没有，则动态创建
         // 创建指定大小的Pixmap（像素图）
         val pixmap = Pixmap(width, height, Pixmap.Format.RGBA8888)

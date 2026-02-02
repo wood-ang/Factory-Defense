@@ -1,6 +1,6 @@
 package com.wood.FactoryDefense.kotlin.UI
 
-import com.wood.FactoryDefense.kotlin.StaticData.StaticData.*
+import com.wood.FactoryDefense.kotlin.StaticData.Data.*
 
 
 /**
@@ -20,7 +20,7 @@ import com.wood.FactoryDefense.kotlin.StaticData.StaticData.*
  * @property width UI元素的宽度，默认100f
  * @property height UI元素的高度，默认50f
  */
-class UIShape(
+class Shape(
     var width: Float,
     var height: Float,
     var transparency: Float = 1f

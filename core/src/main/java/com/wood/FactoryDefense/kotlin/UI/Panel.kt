@@ -2,7 +2,7 @@ package com.wood.FactoryDefense.kotlin.UI
 
 import com.badlogic.gdx.graphics.g2d.BitmapFont
 import com.badlogic.gdx.graphics.g2d.SpriteBatch
-import com.wood.FactoryDefense.kotlin.StaticData.StaticData.*
+import com.wood.FactoryDefense.kotlin.StaticData.Data.*
 
 /**
  * UI面板容器组件
@@ -11,8 +11,8 @@ import com.wood.FactoryDefense.kotlin.StaticData.StaticData.*
  * 提供工业风格的视觉背景，常用于组织和管理一组相关UI控件，
  * 如设置菜单、信息面板、工具条等。
  */
-class UIPanel(   // 面板高度
-    shape: UIShape, layout: UILayout
+class Panel(   // 面板高度
+    shape: Shape, layout: UILayout
 ) : BasicUIBlock(shape, layout) {
 
     override fun render(batch: SpriteBatch,font: BitmapFont) {

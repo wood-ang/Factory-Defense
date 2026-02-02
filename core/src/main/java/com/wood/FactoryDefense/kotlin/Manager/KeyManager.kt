@@ -4,11 +4,9 @@ import com.badlogic.gdx.Input
 import com.badlogic.gdx.Input.Keys.*
 import com.badlogic.gdx.InputProcessor
 import com.wood.FactoryDefense.kotlin.Block.Air
-import com.wood.FactoryDefense.kotlin.StaticData.StaticData.*
-import com.wood.FactoryDefense.kotlin.Block.BasicBuildingBlock
+import com.wood.FactoryDefense.kotlin.StaticData.Data.*
 import com.wood.FactoryDefense.kotlin.Block.BlockFactory.createBlockById
-import com.wood.FactoryDefense.kotlin.Block.Stone
-import com.wood.FactoryDefense.kotlin.StaticData.StaticUIData.*
+import com.wood.FactoryDefense.kotlin.StaticData.UIData.*
 
 class Processor : InputProcessor {
 

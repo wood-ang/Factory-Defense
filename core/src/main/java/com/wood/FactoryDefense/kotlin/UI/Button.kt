@@ -10,8 +10,8 @@ import com.badlogic.gdx.graphics.g2d.SpriteBatch
  * 负责管理按钮的几何形状、文本内容和渲染逻辑。
  * 通常用于菜单、对话框、控制面板等交互界面。
  */
-class UIButton(
-    shape: UIShape, layout: UILayout
+class Button(
+    shape: Shape, layout: UILayout
 ) : BasicUIBlock(shape, layout) {
 
 

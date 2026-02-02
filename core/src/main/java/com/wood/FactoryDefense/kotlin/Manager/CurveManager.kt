@@ -1,12 +1,12 @@
 package com.wood.FactoryDefense.kotlin.Manager
 
-import com.wood.FactoryDefense.kotlin.StaticData.StaticData.*
-import com.wood.FactoryDefense.kotlin.StaticData.StaticUIData.*
+import com.wood.FactoryDefense.kotlin.StaticData.Data.*
+import com.wood.FactoryDefense.kotlin.StaticData.UIData.*
 
 class CurveManager : Runnable {
     override fun run() {
         while (true) {
-            var startTime = System.currentTimeMillis()
+            val startTime = System.currentTimeMillis()
 
             //***************************************************
 
@@ -21,14 +21,5 @@ class CurveManager : Runnable {
             //***************************************************
             CurveManagerFPS_true = (1000 / (System.currentTimeMillis() - startTime))
         }
-    }
-}
-class CurveData(
-    val smoothingParameter: Float
-){
-    var data: Float = 0f
-    var data_ture: Float = 0f
-    fun update(){
-        data_ture += ((data - data_ture) * smoothingParameter)
     }
 }

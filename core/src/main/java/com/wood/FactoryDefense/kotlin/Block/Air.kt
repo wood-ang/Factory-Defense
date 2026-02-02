@@ -1,7 +1,7 @@
 package com.wood.FactoryDefense.kotlin.Block
 
 import com.badlogic.gdx.graphics.g2d.SpriteBatch
-import com.wood.FactoryDefense.kotlin.StaticData.StaticData.*
+import com.wood.FactoryDefense.kotlin.StaticData.Data.*
 
 class Air internal constructor() : BasicBlock() {
 

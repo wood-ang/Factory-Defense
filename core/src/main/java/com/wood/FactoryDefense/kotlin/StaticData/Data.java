@@ -1,13 +1,16 @@
 package com.wood.FactoryDefense.kotlin.StaticData;
 
 import com.badlogic.gdx.graphics.Texture;
+import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.NinePatch;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.wood.FactoryDefense.kotlin.Block.BasicBlock;
 import com.wood.FactoryDefense.kotlin.Block.WorldMap;
+import com.wood.FactoryDefense.kotlin.Item.ItemLayout;
 import com.wood.FactoryDefense.kotlin.terminal.Terminal;
 
-public class StaticData {
+public class Data {
+    public static long DrawManagerFPS = 120;
     public static long GameManagerFPS = 20;
     public static long CurveLaoderFPS = 60;
     public static float CuverSmoothingParameter = 0.2f;
@@ -17,6 +20,8 @@ public class StaticData {
 
 
     //************************************************************************//
+    public static BitmapFont font;             // 字体，用于绘制文字
+
     public static float fontX;
     public static float fontY;
 
@@ -84,6 +89,8 @@ public class StaticData {
     public static Terminal terminal;
     //************************************************************************//
     public static BasicBlock choose;
+
+    public static ItemLayout itemLayout = new ItemLayout(0f, 0f, 0);
     //************************************************************************//
     public static final String WARN = "\033[33mWARN\033[0m";
     public static final String ERROR = "\033[31mERROR\033[0m";

@@ -26,7 +26,7 @@ public class Curve {
             this.xB = x;
         }
         this.yB = yB;
-        main();
+        start();
     }
      public Curve(int piece , Double xA, Double yA, Double xB, Double yB){
         this.piece = piece;
@@ -34,7 +34,7 @@ public class Curve {
         this.yA = yA;
         this.xB = xB;
         this.yB = yB;
-        main();
+        start();
     }
 
     Double fx11(){
@@ -80,7 +80,7 @@ public class Curve {
         return k * (fy22() - fy21()) + fy21();
     }
 
-    public void main(){
+    public void start(){
         k = -(1.0/piece);
         for (int i = 0; i < piece; i++){
             k += 1.0 /piece;
@@ -124,23 +124,5 @@ public class Curve {
             System.out.print(word);
         }
     }
-//
-//
-//    public void imageOut(int width) throws InterruptedException {
-//        for (int i = 0; i < piece; i++){
-//
-//            System.out.print("\r");
-//            repeat(100,'0');
-//            System.out.print("\r");
-//            System.out.flush();
-//
-//            System.out.print("[");
-//            repeat((int) (width*((double)i/(double) width)), '=');
-//            repeat(width - ((int) (width*((double)i /(double) width))), ' ');
-//            System.out.print("]");
-//            Thread.sleep((long) (3000.0/(double) piece));
-//        }
-//        System.out.print("\n");
-//    }
 
 }
