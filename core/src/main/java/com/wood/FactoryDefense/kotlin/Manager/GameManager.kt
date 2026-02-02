@@ -3,6 +3,9 @@ package com.wood.FactoryDefense.kotlin.Manager
 import com.wood.FactoryDefense.kotlin.StaticData.StaticData.*
 import com.wood.FactoryDefense.kotlin.Block.Air
 import com.wood.FactoryDefense.kotlin.Block.BlockFactory
+import com.wood.FactoryDefense.kotlin.Curve.Coordinate
+import com.wood.FactoryDefense.kotlin.Item.BasicItem
+import com.wood.FactoryDefense.kotlin.Item.Bundle
 import com.wood.FactoryDefense.kotlin.Manager.Direction.*
 import kotlin.math.sqrt
 import com.wood.FactoryDefense.kotlin.StaticData.StaticUIData.*
@@ -32,20 +35,13 @@ class GameManager : Runnable {
     }
 
     fun blockFlasher(){
-
         for (x in 0 until worldMap.width) {
             for (y in 0 until worldMap.height) {
-                worldMap.blocks[x][y].updateSelfAndNeighbors(x, y)
-            }
-        }
-
-        for (x in 0 until worldMap.width) {
-            for (y in 0 until worldMap.height) {
-
                 if(mouseX in x.toFloat()*32f..(x.toFloat()*32f + 32f) && mouseY in y.toFloat()*32f..(y.toFloat()*32 + 32f)){
                     if (mouseRight){
                         worldMap.blocks[x][y].beforeBroke(x, y)
                         worldMap.blocks[x][y] = Air()
+                        worldMap.blocks[x][y].isHovered = true
                         worldMap.blocks[x][y].afterBreak(x, y)
                     }
                     if (mouseLeft){
@@ -53,11 +49,17 @@ class GameManager : Runnable {
                         if (choose.ID != -1) {
                             worldMap.blocks[x][y].beforeBuild(x, y)
                             worldMap.blocks[x][y] = BlockFactory.createBlockById(choose.ID)
+                            worldMap.blocks[x][y].isHovered = true
                             worldMap.blocks[x][y].afterBuild(x, y)
                         }
                     }
+                    if (mouseMIDDLE){
+                        choose = worldMap.blocks[x][y]
+                    }
+                    if(KeyQ){
+                        worldMap.items[Coordinate((mouseX).toDouble(),(mouseY).toDouble())] = Bundle(BasicItem())
+                    }
                 }
-                worldMap.blocks[x][y].updateSelfAndNeighbors(x, y)
             }
         }
     }

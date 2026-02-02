@@ -33,6 +33,6 @@ class Stone: BasicBlock() {
         name = "Stone"
         canDestroyed = true
         texture = textureStone
-        ID = 2
+        ID = 3
     }
 }

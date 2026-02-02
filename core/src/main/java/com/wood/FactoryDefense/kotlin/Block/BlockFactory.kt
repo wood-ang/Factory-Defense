@@ -12,9 +12,9 @@ object BlockFactory {
 
     fun createBlockById(id: Int): BasicBlock {
         return when (id) {
-            0 -> Air()
-            1 -> BasicBuildingBlock()
-            2 -> Stone()
+            1 -> Air()
+            2 -> BasicBuildingBlock()
+            3 -> Stone()
             else -> Air()
         }
     }

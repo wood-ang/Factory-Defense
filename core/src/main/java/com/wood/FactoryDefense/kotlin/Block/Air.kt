@@ -17,6 +17,6 @@ class Air internal constructor() : BasicBlock() {
         name = "Air"
         canDestroyed = false
         texture = textureAir
-        ID = 0
+        ID = 1
     }
 }

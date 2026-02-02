@@ -39,7 +39,7 @@ class BasicBuildingBlock internal constructor() : BasicBlock() {
         name= "BaseBuildingBlock"
         canDestroyed= true
         texture= textureBaseBlock
-        ID= 1
+        ID= 2
     }
 
 }

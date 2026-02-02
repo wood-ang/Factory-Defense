@@ -77,6 +77,8 @@ public class StaticData {
     public static Texture textureStoneFrame_T;
     public static Texture textureStoneFrame_TL;
     public static Texture textureStoneFrame_TR;
+
+    public static Texture textureBasicItem;
     //************************************************************************//
     public static boolean debug = true;
     public static Terminal terminal;

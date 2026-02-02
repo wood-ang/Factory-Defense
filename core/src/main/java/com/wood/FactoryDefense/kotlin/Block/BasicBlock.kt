@@ -76,35 +76,35 @@ open class BasicBlock {
     fun getNeighborByDirection(x: Int, y: Int, direction: Direction): BasicBlock{
         return when (direction) {
             Top -> {
-                if (y + 1 >= worldMap.height) NULL()
+                if (y + 1 >= worldMap.height) Air()
                 else worldMap.blocks[x][y + 1]
             }
             TopRight -> {
-                if (x + 1 >= worldMap.width || y + 1 >= worldMap.height) NULL()
+                if (x + 1 >= worldMap.width || y + 1 >= worldMap.height) Air()
                 else worldMap.blocks[x + 1][y + 1]
             }
             Right -> {
-                if (x + 1 >= worldMap.width) NULL()
+                if (x + 1 >= worldMap.width) Air()
                 else worldMap.blocks[x + 1][y]
             }
             BottomRight -> {
-                if (x + 1 >= worldMap.width || y - 1 < 0) NULL()
+                if (x + 1 >= worldMap.width || y - 1 < 0) Air()
                 else worldMap.blocks[x + 1][y - 1]
             }
             Bottom -> {
-                if (y - 1 < 0) NULL()
+                if (y - 1 < 0) Air()
                 else worldMap.blocks[x][y - 1]
             }
             BottomLeft -> {
-                if (x - 1 < 0 || y - 1 < 0) NULL()
+                if (x - 1 < 0 || y - 1 < 0) Air()
                 else worldMap.blocks[x - 1][y - 1]
             }
             Left -> {
-                if (x - 1 < 0) NULL()
+                if (x - 1 < 0) Air()
                 else worldMap.blocks[x - 1][y]
             }
             TopLeft -> {
-                if (x - 1 < 0 || y + 1 >= worldMap.height) NULL()
+                if (x - 1 < 0 || y + 1 >= worldMap.height) Air()
                 else worldMap.blocks[x - 1][y + 1]
             }
         }

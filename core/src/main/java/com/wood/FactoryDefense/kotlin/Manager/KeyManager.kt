@@ -3,9 +3,10 @@ package com.wood.FactoryDefense.kotlin.Manager
 import com.badlogic.gdx.Input
 import com.badlogic.gdx.Input.Keys.*
 import com.badlogic.gdx.InputProcessor
+import com.wood.FactoryDefense.kotlin.Block.Air
 import com.wood.FactoryDefense.kotlin.StaticData.StaticData.*
 import com.wood.FactoryDefense.kotlin.Block.BasicBuildingBlock
-import com.wood.FactoryDefense.kotlin.Block.NULL
+import com.wood.FactoryDefense.kotlin.Block.BlockFactory.createBlockById
 import com.wood.FactoryDefense.kotlin.Block.Stone
 import com.wood.FactoryDefense.kotlin.StaticData.StaticUIData.*
 
@@ -30,16 +31,9 @@ class Processor : InputProcessor {
                 KeyQ = true
             }
             TAB -> {
-                chooseNumber += 1
-                if (!(chooseNumber < 3))chooseNumber = 0
-                choose = when(chooseNumber){
-                    0 -> NULL()
-                    1 -> BasicBuildingBlock()
-                    2 -> Stone()
-                    else -> {
-                        NULL()
-                    }
-                }
+                chooseNumber = choose.ID + 1
+                if (chooseNumber >= 4)chooseNumber = 1
+                choose = createBlockById(chooseNumber)
             }
             P -> {
                 debug = !debug
@@ -54,6 +48,9 @@ class Processor : InputProcessor {
             V -> {
                 fontX = worldMap.respawnPointX
                 fontY = worldMap.respawnPointY
+            }
+            ESCAPE ->{
+                choose = Air()
             }
         }
         return true

@@ -14,11 +14,11 @@ import com.badlogic.gdx.graphics.g2d.TextureRegion  // 纹理区域，用于截�
 import com.badlogic.gdx.math.Matrix4  // 4x4矩阵，用于坐标变换
 import com.badlogic.gdx.math.Vector3  // 三维向量，用于坐标表示
 import com.badlogic.gdx.utils.ScreenUtils  // 屏幕工具类，提供清屏等功能
+import com.wood.FactoryDefense.kotlin.Block.Air
 import com.wood.FactoryDefense.kotlin.Block.BlockFactory.createBlockById
 
 // 导入游戏自定义类
 import com.wood.FactoryDefense.kotlin.StaticData.StaticData.*  // 静态数据，包含游戏全局变量
-import com.wood.FactoryDefense.kotlin.Block.NULL  // 空方块类型
 import com.wood.FactoryDefense.kotlin.Block.WorldMap  // 世界地图类
 import com.wood.FactoryDefense.kotlin.Curve.ThreadCurve  // 曲线动画线程类
 import com.wood.FactoryDefense.kotlin.Manager.CurveManager  // 曲线管理器
@@ -73,6 +73,13 @@ class Main : ApplicationAdapter() {
         // 启动后台管理线程
         createThreads()
 
+
+        for (x in 0 until worldMap.width) {
+            for (y in 0 until worldMap.width) {
+                worldMap.blocks[x][y].updateConnections(x,y)
+            }
+        }
+
     }
 
     /**
@@ -105,6 +112,8 @@ class Main : ApplicationAdapter() {
             textureStoneFrame_B = Texture("StoneFrame_B.png")
             textureStoneFrame_R = Texture("StoneFrame_R.png")
             textureStoneFrame_L = Texture("StoneFrame_L.png")
+
+        textureBasicItem = Texture("BasicItem.png")
         textureUIPanle = Texture("UIPanel.png")  // UI面板背景纹理
         textureRegion = TextureRegion(textureUIPanle)  // 创建纹理区域
         ninePatch = NinePatch(textureRegion)  // 创建九宫格（用于UI拉伸）
@@ -122,7 +131,7 @@ class Main : ApplicationAdapter() {
         font = BitmapFont()  // 创建默认字体
 
         // --- 初始化地图 ---
-        worldMap = WorldMap(10, 10)  // 创建10x10区块的世界地图
+        worldMap = WorldMap(246, 256)  // 创建10x10区块的世界地图
         worldMap.respawnPointX = 256f  // 设置重生点X坐标
         worldMap.respawnPointY = 256f  // 设置重生点Y坐标
         fontX = worldMap.respawnPointX  // 设置字体起始X坐标
@@ -130,8 +139,8 @@ class Main : ApplicationAdapter() {
 
         // --- 其余初始化 ---
         hovered = Texture("Hovered.png")  // 加载悬停高亮纹理
-        choose = NULL()  // 初始化当前选择的方块为空
-        Gdx.input.setInputProcessor(inputProcessor)  // 设置输入处理器
+        choose = Air()  // 初始化当前选择的方块为空
+        Gdx.input.inputProcessor = inputProcessor  // 设置输入处理器
         terminal = Terminal()
         terminal.logs.add(Log(WARN,"Log1" ))
     }
@@ -161,7 +170,7 @@ class Main : ApplicationAdapter() {
         val text = UIText(
             UIShape(400f, 50f),
             UILayout(Arrangement.Vertical, 1, x = 8f, y = 24f),
-            "${mouseX } ${mouseY}"
+            "$mouseX $mouseY"
         )
 
         // 将面板添加到UI管理器的根节点
@@ -227,7 +236,8 @@ class Main : ApplicationAdapter() {
         mouseY = mouse.y
 
         // --- 绘制游戏世界 ---
-        drawTexture()     // 绘制所有方块
+        drawTextureBlock()     // 绘制所有方块
+        drawTextureItem() // 绘制方块边框
         drawHovered()     // 绘制悬停效果
         drawDebugText()   // 绘制调试信息
 
@@ -241,7 +251,7 @@ class Main : ApplicationAdapter() {
      * drawTexture() - 绘制世界中的所有方块
      * 私有方法，遍历并绘制每个方块
      */
-    private fun drawTexture() {
+    private fun drawTextureBlock() {
         // 遍历所有区块
         for (x in 0 until worldMap.width) {
             // 遍历当前区块内的所有方块
@@ -259,6 +269,12 @@ class Main : ApplicationAdapter() {
                     worldMap.blocks[x][y].isHovered = false // 清除悬停标记
                 }
             }
+        }
+    }
+
+    private fun drawTextureItem() {
+        worldMap.items.forEach { (coordinate, bundle) ->
+            bundle.item.render(coordinate.x.toFloat(), coordinate.y.toFloat(), batchDraw)
         }
     }
 
