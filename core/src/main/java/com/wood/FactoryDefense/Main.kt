@@ -49,14 +49,15 @@ class Main : ApplicationAdapter() {
         var lastHoveredY = 0  // 方块在区块内的索引
         var isItemHovered: Boolean = false
         var isBlockHovered: Boolean = false
+
         // --- 动画效果 ---
         val curveBlockHovered = ThreadCurve(3000, 1.0, 100.0, 0.2, 20)  // 曲线动画线程，用于悬停效果
-        val curveItemHovered  = ThreadCurve(3000, 1.0, 100.0, 0.2, 20)  // 曲线动画线程，用于悬停效果
+        val curveItemHovered  = ThreadCurve(3000, 1.0, 100.0, 0.3, 20)  // 曲线动画线程，用于悬停效果
 
         var indexOut: Int = 0
 
         // 参数说明：持续时间3000ms，起始值1.0，结束值100.0，初始速度0.2，加速度20
-        var lastHoveredItem = ItemLayout(0f, 0f)
+        var lastHoveredItemLayout = ItemLayout(0f, 0f)
     }
 
     // --- 图形渲染相关变量 ---
@@ -187,7 +188,7 @@ class Main : ApplicationAdapter() {
         )
         val text = Text(
             Shape(400f, 50f),
-            UILayout(Arrangement.Vertical, 1, x = 8f, y = 24f),
+            UILayout(Arrangement.Vertical, 1, x = 0f, y = 32f),
             "$mouseX $mouseY"
         )
 
@@ -224,10 +225,10 @@ class Main : ApplicationAdapter() {
         batchDraw.begin()
 
         // --- 绘制游戏世界 ---
-        drawBlocks(batchDraw)     // 绘制所有方块
-        drawItems(batchDraw) // 绘制掉落物
-        whenHovered(batchDraw)     // 绘制悬停效果
-        drawDebugText(batchDraw)   // 绘制调试信息
+        drawBlocks(batchDraw)       // 绘制所有方块
+        drawItems(batchDraw)        // 绘制掉落物
+        whenHovered(batchDraw)      // 绘制悬停效果
+        drawDebugText(batchDraw)    // 绘制调试信息
 
         // 结束绘制批次
         batchDraw.end()
@@ -267,7 +268,6 @@ class Main : ApplicationAdapter() {
         // 存储到全局变量中（可能供其他系统使用）
         mouseX = mouse.x
         mouseY = mouse.y
-
     }
 
 

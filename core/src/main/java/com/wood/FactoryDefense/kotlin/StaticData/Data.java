@@ -11,7 +11,7 @@ import com.wood.FactoryDefense.kotlin.terminal.Terminal;
 
 public class Data {
     public static long DrawManagerFPS = 120;
-    public static long GameManagerFPS = 20;
+    public static long GameManagerFPS = 60;
     public static long CurveLaoderFPS = 60;
     public static float CuverSmoothingParameter = 0.2f;
     public static long UIFlashFPS = 60;
@@ -42,6 +42,7 @@ public class Data {
     public static boolean mouseLeft = false;
     public static boolean mouseRight = false;
     public static boolean mouseMIDDLE = false;
+    public static boolean KeyCONTROL_LEFT = false;
     public static boolean KeyQ = false;
     public static boolean KeyW = false;
     public static boolean KeyA = false;

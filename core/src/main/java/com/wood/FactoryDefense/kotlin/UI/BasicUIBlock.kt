@@ -48,7 +48,7 @@ abstract class BasicUIBlock (
         children.forEach { it.renderAll(batch, font) }
     }
 
-    protected abstract fun render(batch: SpriteBatch,font: BitmapFont)
+    abstract fun render(batch: SpriteBatch,font: BitmapFont)
 
     /* ---------------- 输入 ---------------- */
 

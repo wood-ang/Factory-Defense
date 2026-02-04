@@ -14,6 +14,9 @@ open class BasicItem {
     override fun toString(): String {
         return "[name]$name,\n[canDestroyed]$canDestroyed,\n[texture]$texture,\n[ID]$ID"
     }
+    fun toIndentString(indent : Int = 0): String {
+        return "    ".repeat(indent)+"[name]$name,\n"+"    ".repeat(indent)+"[canDestroyed]$canDestroyed,\n"+"    ".repeat(indent)+"[texture]$texture,\n"+"    ".repeat(indent)+"[ID]$ID"
+    }
 
     open fun update(x: Int, y: Int) {
     }

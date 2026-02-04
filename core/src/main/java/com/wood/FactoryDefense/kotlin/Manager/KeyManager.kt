@@ -33,6 +33,9 @@ class Processor : InputProcessor {
                 if (chooseNumber >= 4)chooseNumber = 1
                 choose = createBlockById(chooseNumber)
             }
+            CONTROL_LEFT -> {
+                KeyCONTROL_LEFT = true
+            }
             P -> {
                 debug = !debug
                 if (debug){
@@ -70,6 +73,9 @@ class Processor : InputProcessor {
             }
             Q -> {
                 KeyQ = false
+            }
+            CONTROL_LEFT -> {
+                KeyCONTROL_LEFT = false
             }
         }
         return true

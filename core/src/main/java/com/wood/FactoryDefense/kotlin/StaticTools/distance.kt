@@ -1,7 +1,7 @@
 package com.wood.FactoryDefense.kotlin.StaticTools
 
-import kotlin.math.sqrt
+import kotlin.math.hypot
 
 fun distance(x1: Float, y1: Float, x2: Float, y2: Float): Float {
-    return sqrt(((x1 - x2) * (x1 - x2) + (y1 - y2) * (y1 - y2)).toDouble()).toFloat()
+    return hypot((x1 - x2).toDouble(), (y1 - y2).toDouble()).toFloat()
 }

@@ -1,8 +1,10 @@
 package com.wood.FactoryDefense.kotlin.Manager
 
+import com.wood.FactoryDefense.Main.Companion.indexOut
 import com.wood.FactoryDefense.kotlin.StaticData.Data.*
 import com.wood.FactoryDefense.kotlin.Block.Air
 import com.wood.FactoryDefense.kotlin.Block.BlockFactory
+import com.wood.FactoryDefense.kotlin.DrawFunction.drawHoveredItem
 import com.wood.FactoryDefense.kotlin.Item.BasicItem
 import com.wood.FactoryDefense.kotlin.Item.Bundle
 import com.wood.FactoryDefense.kotlin.Item.ItemLayout
@@ -10,6 +12,7 @@ import com.wood.FactoryDefense.kotlin.Manager.Direction.*
 import kotlin.math.sqrt
 import com.wood.FactoryDefense.kotlin.StaticData.UIData.*
 import com.wood.FactoryDefense.kotlin.StaticData.UIData.uiManager
+import com.wood.FactoryDefense.kotlin.StaticTools.distance
 import com.wood.FactoryDefense.kotlin.UI.Text
 import com.wood.FactoryDefense.kotlin.terminal.Log
 
@@ -21,6 +24,7 @@ class GameManager : Runnable {
             Thread.sleep(1000 / GameManagerFPS)
             //***************************************************
             blockFlasher()
+            ItemFlasher()
             key()
 
             uiManager.roots.children[0].layout.x = PanelY_ture
@@ -58,12 +62,26 @@ class GameManager : Runnable {
                     }
                     if(KeyQ){
                         if (!(itemLayout.x < mouseX && itemLayout.x + 16f > mouseX && itemLayout.y < mouseY && itemLayout.y + 16f > mouseY)) {
-                            worldMap.items.add(Bundle(BasicItem(),ItemLayout(x = mouseX-8f, y = mouseY-8f, angle = 0)))
+                            worldMap.items.add(Bundle(BasicItem(),ItemLayout(x = mouseX-8f, y = mouseY-8f, degrees = 0)))
                         }
                     }
                 }
             }
         }
+    }
+
+    fun ItemFlasher(){
+        for (index in 0 until worldMap.items.size){
+        indexOut = index
+        if (KeyCONTROL_LEFT && distance(worldMap.items[index].layout.x,worldMap.items[index].layout.y,fontX_ture,fontY_ture)<=64f){
+            worldMap.items[index].layout.x = fontX_ture - 8f
+            worldMap.items[index].layout.y = fontY_ture - 8f
+            worldMap.items[index].updata()
+        } else {
+            worldMap.items[index].layout.x_ture = worldMap.items[index].layout.x
+            worldMap.items[index].layout.y_ture = worldMap.items[index].layout.y
+        }
+    }
     }
 
 
@@ -103,32 +121,32 @@ class GameManager : Runnable {
     fun manager(){
         when(direction){
             Top -> {
-                fontY += 25f
+                fontY += 5f
             }
             TopRight -> {
-                fontY += sqrt(((25*25)/2).toDouble()).toFloat()
-                fontX += sqrt(((25*25)/2).toDouble()).toFloat()
+                fontY += sqrt(((5*5)/2).toDouble()).toFloat()
+                fontX += sqrt(((5*5)/2).toDouble()).toFloat()
             }
             Right -> {
-                fontX += 25f
+                fontX += 5f
             }
             BottomRight -> {
-                fontY -= sqrt(((25*25)/2).toDouble()).toFloat()
-                fontX += sqrt(((25*25)/2).toDouble()).toFloat()
+                fontY -= sqrt(((5*5)/2).toDouble()).toFloat()
+                fontX += sqrt(((5*5)/2).toDouble()).toFloat()
             }
             Bottom -> {
-                fontY -= 25f
+                fontY -= 5f
             }
             BottomLeft -> {
-                fontX -= sqrt(((25*25)/2).toDouble()).toFloat()
-                fontY -= sqrt(((25*25)/2).toDouble()).toFloat()
+                fontX -= sqrt(((5*5)/2).toDouble()).toFloat()
+                fontY -= sqrt(((5*5)/2).toDouble()).toFloat()
             }
             Left -> {
-                fontX -= 25f
+                fontX -= 5f
             }
             TopLeft -> {
-                fontY += sqrt(((25*25)/2).toDouble()).toFloat()
-                fontX -= sqrt(((25*25)/2).toDouble()).toFloat()
+                fontY += sqrt(((5*5)/2).toDouble()).toFloat()
+                fontX -= sqrt(((5*5)/2).toDouble()).toFloat()
             }
         }
     }
