@@ -2,7 +2,7 @@ package com.wood.FactoryDefense.lwjgl3;
 
 import com.badlogic.gdx.backends.lwjgl3.Lwjgl3Application;
 import com.badlogic.gdx.backends.lwjgl3.Lwjgl3ApplicationConfiguration;
-import com.wood.FactoryDefense.Main;
+import com.wood.FactoryDefense.kotlin.Main;
 
 /**
  * 启动桌面 (LWJGL3) 应用程序。
